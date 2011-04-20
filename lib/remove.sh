@@ -40,7 +40,7 @@ remove_from_stage()
   for f in ${install_files[@]} 
   do
     local bn=`basename $f`
-    log "remove link from from staging area [$f]"
+    log "removing link from from staging area [$f]"
     rm -f $LOCAL_DIR/bin/$bn
   done
 }
@@ -51,10 +51,10 @@ after_remove()
   local lock_file="$LOG_DIR/$recipe_name.lock"
   local install_flag="$LOG_DIR/$recipe_name.installed"
  
-  log "recipe [$recipe_name] removed."
   log "removing lock. [$lock_file]"
   rm -f $lock_file
   log "removing install flag [$install_flag]"
   rm -f $install_flag
+  log "recipe [$recipe_name] removed."
 }
 

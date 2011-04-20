@@ -51,6 +51,14 @@ shift $(($OPTIND - 1))
 action=$1
 recipe=$2
 
+# This allows us to use the seed_name
+# as a particular version and
+# have multiple versions of these
+# tools maintained in their
+# recipe staging directory
+LOG_DIR="$LOG_DIR/$recipe"
+STAGE_DIR="$STAGE_DIR/$recipe"
+
 case $action in
   "list")
     bb_list

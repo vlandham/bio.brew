@@ -41,6 +41,7 @@ check_if_installed()
 before_install()
 {
   local recipe_name=$1
+  mkdir -p $STAGE_DIR
   mkdir -p $LOCAL_DIR
   mkdir -p $TB_DIR
   mkdir -p $LOG_DIR
@@ -70,7 +71,7 @@ configure_tool()
   local prefix=$3
   local log_file="$LOG_DIR/${seed_name}.configure.log.txt"
 
-  [ ".$prefix" ==  "." ] && prefix=$LOCAL_DIR/$seed_name
+  [ ".$prefix" ==  "." ] && prefix=$STAGE_DIR/$seed_name
   log "running configure [logging output: $log_file]"
   ./configure --prefix=$prefix $options &> $log_file
 }
@@ -105,9 +106,9 @@ link_from_stage()
     local bn=`basename $f`
     log "linking from staging area [$f]"
     rm -f $LOCAL_DIR/bin/$bn
-    ln -s $LOCAL_DIR/$seed_name/$f $LOCAL_DIR/bin/$bn
+    ln -s $STAGE_DIR/$seed_name/$f $LOCAL_DIR/bin/$bn
     log "Setting permission"
-    [ -f $LOCAL_DIR/$seed_name/$f ] && chmod 755 $LOCAL_DIR/$seed_name/$f
+    [ -f $STAGE_DIR/$seed_name/$f ] && chmod 755 $STAGE_DIR/$seed_name/$f
   done
   return 0
 }

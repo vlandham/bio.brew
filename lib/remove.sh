@@ -19,8 +19,8 @@ remove_recipe()
   local recipe_name=$1
   log "removing: $TB_DIR/$recipe_name"
   rm -rf $TB_DIR/$recipe_name
-  log "removing: $LOCAL_DIR/$recipe_name"
-  rm -rf $LOCAL_DIR/$recipe_name
+  log "removing: $STAGE_DIR/$recipe_name"
+  rm -rf $STAGE_DIR/$recipe_name
 }
 
 remove_recipe_using_make()

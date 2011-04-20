@@ -21,6 +21,7 @@ remove_recipe()
   rm -rf $TB_DIR/$recipe_name
   log "removing: $STAGE_DIR/$recipe_name"
   rm -rf $STAGE_DIR/$recipe_name
+  rm -r $STAGE_DIR/current
 }
 
 remove_recipe_using_make()

@@ -8,7 +8,6 @@ local install_files=(bin/java bin/javac)
 
 do_install()
 {
-  before_install $seed_name
   # pwd: tarball
   cd $TB_DIR
   download $URL $tb_file
@@ -25,15 +24,12 @@ do_install()
   rm -rf linux-jre
   mv linux-jdk ../local/java
   link_from_stage $recipe ${install_files[@]}
-  after_install $recipe
 }
 
 do_remove()
 {
-  before_remove $seed_name
   remove_recipe $seed_name
   remove_from_stage $seed_name ${install_files[@]}
-  after_remove $seed_name
 }
 
 source "$MAIN_DIR/lib/case.sh"

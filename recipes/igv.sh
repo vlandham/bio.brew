@@ -9,7 +9,6 @@ local install_files=(igv.jar batik-codec.jar igv_linux-64.sh)
 
 do_install()
 {
-  before_install $seed_name
   cd $LOCAL_DIR
   log "Downloading"
   curl -sL $URL > ${unzip_dir}.zip
@@ -18,15 +17,12 @@ do_install()
   rm -f *.zip
   mv $unzip_dir $seed_name
   link_from_stage $seed_name ${install_files[@]}
-  after_install $recipe
 }
 
 do_remove()
 {
-  before_remove $seed_name
   remove_recipe $seed_name
   remove_from_stage $seed_name ${install_files[@]}
-  after_remove $seed_name
 }
 
 source "$MAIN_DIR/lib/case.sh"

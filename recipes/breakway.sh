@@ -10,8 +10,6 @@ local install_files=(breakway.run.pl scripts/breakway.parameters.pl)
 
 do_install()
 {
-  check_deps ${deps[@]}
-  before_install $seed_name
   cd $LOCAL_DIR
   log "Downloading ${root_seed}"
   curl -sL $URL > $tb_file
@@ -19,14 +17,11 @@ do_install()
   rm -f $tb_file
   cd $root_seed
   link_from_stage $root_seed ${install_files[@]} 
-  after_install $recipe
 }
 
 do_remove()
 {
-  before_remove $seed_name
   rm -rf $LOCAL_DIR/$root_seed*
-  after_remove $seed_name
 }
 
 source "$MAIN_DIR/lib/case.sh"

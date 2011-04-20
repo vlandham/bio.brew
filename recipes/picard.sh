@@ -8,7 +8,6 @@ local deps=(java)
 
 do_install()
 {
-  before_install $seed_name
   cd $LOCAL_DIR
   log "Downloading"
   curl -sL $URL > ${unzip_dir}.zip
@@ -17,14 +16,11 @@ do_install()
   rm -f *.zip
   mv $unzip_dir $seed_name
   for_env "export PICARD='$LOCAL_DIR/picard'"
-  after_install $recipe
 }
 
 do_remove()
 {
-  before_remove $seed_name
   rm -rf $LOCAL_DIR/$seed_name
-  after_remove $seed_name
 }
 
 source "$MAIN_DIR/lib/case.sh"

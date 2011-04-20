@@ -8,7 +8,6 @@ local deps=(java)
 
 do_install()
 {
-  before_install $seed_name
   cd $LOCAL_DIR
   log "Downloading"
   curl -sL $URL > ${zip_file}
@@ -17,15 +16,12 @@ do_install()
   rm -f $zip_file
   chmod 755 $LOCAL_DIR/$unzip_dir/fastqc
   ln -s $LOCAL_DIR/$unzip_dir/fastqc ./bin/fastqc
-  after_install $recipe
 }
 
 do_remove()
 {
-  before_remove $seed_name
   rm -rf $LOCAL_DIR/$unzip_dir
   rm -f $LOCAL_DIR/bin/fastqc
-  after_remove $seed_name
 }
 
 source "$MAIN_DIR/lib/case.sh"

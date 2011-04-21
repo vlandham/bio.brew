@@ -3,6 +3,7 @@ case $bb_action in
     if [ $(check_if_installed $seed_name) == "0" ]
     then
       check_deps ${deps[@]}
+      check_external_deps ${external_deps[@]}
       before_install $seed_name
       do_install
       after_install $seed_name

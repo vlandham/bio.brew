@@ -6,7 +6,7 @@ local install_files=(bfast/bfast scripts/solid2fastq scripts/ill2fastq.pl)
 
 do_install()
 {
-  cd $LOCAL_DIR
+  cd $STAGE_DIR
   log "git cloning: $URL"
   git clone $URL &> $LOG_DIR/${seed_name}.git_clone.log.txt
   cd $seed_name

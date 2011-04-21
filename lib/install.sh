@@ -31,11 +31,54 @@ check_deps()
   return 0 
 }
 
+check_external_deps()
+{
+  local list_external_deps=("$@")
+  local not_installed=""
+
+  for f in ${list_external_deps[@]}
+  do
+    log "Checking external dependency $f"
+    if [ $(check_if_external_installed $f) == "1" ]
+    then
+      not_installed="$not_installed $f"
+    fi
+  done
+
+  [ ".$not_installed" != "." ] && log "Install external packages first:$not_installed" && exit 1
+  return 0
+}
+
+check_if_external_installed()
+{
+  local package_name=$1
+  rtn=1
+
+  local apt_get=`which apt-get 2> /dev/null`
+  #if [ ".$apt_get" != "." ]
+  #then
+    # assume ubuntu / debian box
+    #log "Checking for $package_name in apt-get package manager"
+  #fi
+
+  local rpm=`which rpm 2> /dev/null`
+  if [ ".$rpm" != "." ]
+  then
+    # assume redhat / centOS box
+    #log "Checking for $package_name in rpm package manager"
+    local package_found=`rpm -qi $package_name 2> /dev/null`
+    [[ $package_found != *not*installed* ]] && rtn=0 || rtn=1
+  fi
+
+  #log "Package Manager not found. External dependencies may exist"
+  echo $rtn
+}
+
 check_if_installed()
 {
-  local recipe_name=$1
+  local install_seed_name=$1
   #[ -d $TB_DIR/$recipe_name ] && echo 1 || echo 0
-  [ -f $LOG_DIR/$recipe_name.installed ] && echo 1 || echo 0
+  [ -f $LOG_DIR/$install_seed_name.installed ] && echo 1 || echo 0
 }
 
 before_install()

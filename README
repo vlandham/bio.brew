@@ -41,30 +41,11 @@ of jars that cannot be executed directly. By loading the recipe's enviroment you
 have a ENV variable called PICARD that points to the jars. It is then very easy to 
 use the jars as necessary.
 
-Here is a list of the recipes available (This is an old version, there are more 
-packages now):
+## Using bio.brew
 
-$ ./bin/bb list
-- : ant                      :  java
-- : bfast                    :  
-- : bwa                      :  svn
-- : cdargs-1.35              :  
-- : dnaa                     :  samtools bfast
-- : gatk                     :  java
-- : git-1.7.3.2              :  
-- : java                     :  
-- : libevent-1.4.14b-stable  :  
-- : perl-5.12.2              :  
-- : picard                   :  java
-- : R-2.12.0                 :  
-- : ruby-1.9.2-p0            :  
-- : samtools                 :  svn
-- : srma                     :  samtools ant picard java
-- : subversion-1.6.13        : 
-- : tmux-1.3                 :  libevent-1.4.14b-stable
-- : vim73                    :  
+### Installing a new recipe
 
-As you can see, I don't have any installed ('-'). I can now install something:
+Here we use bio.brew to install subversion. The -j8 is passed to make when compiling
 
 $ ./bin/bb -j8 install svn
 Sun Oct 31 11:19:38 CDT 2010 >> Installing recipe: svn
@@ -80,6 +61,8 @@ Sun Oct 31 11:23:16 CDT 2010 >> linking from staging area [bin/svn]
 Sun Oct 31 11:23:16 CDT 2010 >> recipe [subversion-1.6.13] installed.
 Sun Oct 31 11:23:16 CDT 2010 >> removing lock. [/data/rogers/drio_scratch/bb/logs/subversion-1.6.13.lock]
 Sun Oct 31 11:23:16 CDT 2010 >> touching install flag [/data/rogers/drio_scratch/bb/logs/subversion-1.6.13.installed]
+
+As you can see, it is now installed in bio.brew's local directory
 
 $ ls -acl ./local/bin/svn
 ./local/bin/svn

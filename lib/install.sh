@@ -58,19 +58,16 @@ check_if_external_installed()
   #if [ ".$apt_get" != "." ]
   #then
     # assume ubuntu / debian box
-    #log "Checking for $package_name in apt-get package manager"
   #fi
 
   local rpm=`which rpm 2> /dev/null`
   if [ ".$rpm" != "." ]
   then
     # assume redhat / centOS box
-    #log "Checking for $package_name in rpm package manager"
     local package_found=`rpm -qi $package_name 2> /dev/null`
     [[ $package_found != *not*installed* ]] && rtn=0 || rtn=1
   fi
 
-  #log "Package Manager not found. External dependencies may exist"
   echo $rtn
 }
 
@@ -179,13 +176,16 @@ decompress_tool()
 {
   local tb_file=$1
   local tb_type=$2
-  log "decompressing tarball: $tb_file ($tb_type)"
+  log "decompressing package: $tb_file ($tb_type)"
   case $tb_type in
     "tar.gz")
       tar zxf $tb_file
     ;;
     "tar.bz2")
       tar jxf $tb_file
+    ;;
+    "zip")
+      unzip $tb_file
     ;;
     ?)
       log "Problems decompressing $tb_file" 1

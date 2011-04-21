@@ -6,7 +6,7 @@ local type="tar.gz"
 local seed_name=$(extract_tool_name $tb_file $type)
 local install_files=(bin/svn)
 local deps=()
-
+local external_deps=("openssl-devel")
 do_install()
 {
   cd $TB_DIR

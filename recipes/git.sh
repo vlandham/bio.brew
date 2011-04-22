@@ -14,6 +14,7 @@ do_install()
   make_tool $seed_name $make_j
   install_tool $seed_name
   link_from_stage $seed_name ${install_files[@]}
+  rm -rf $TB_DIR/$seed_name
 }
 
 do_remove()

@@ -1,14 +1,13 @@
-
+local version="0.5.0-pre"
 local URL="https://github.com/joyent/node.git"
-local seed_name="node"
+local seed_name="node_$version"
 local deps=()
 local install_files=(node)
 
 do_install()
 {
-  cd $LOCAL_DIR
-  log "git cloning: $URL"
-  git clone $URL &> $LOG_DIR/${seed_name}.git_clone.log.txt
+  cd $STAGE_DIR
+  download_git $URL $seed_name
   cd $seed_name
   configure_tool $seed_name 
   make_tool $seed_name $make_j

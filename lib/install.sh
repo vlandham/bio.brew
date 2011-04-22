@@ -172,6 +172,15 @@ download()
   fi 
 }
 
+download_git()
+{
+  local url=$1
+	local download_file=$2
+	local log_file=$LOG_DIR/${download_file}.git.log.txt
+  log "git cloning: $url to $download_file"
+  git clone $url $download_file &> $log_file
+}
+
 decompress_tool()
 {
   local tb_file=$1

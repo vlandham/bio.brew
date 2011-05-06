@@ -18,6 +18,17 @@ do_install()
   link_from_stage $recipe ${install_files[@]}
 }
 
+do_activate()
+{
+  link_from_stage $seed_name ${install_files[@]}
+}
+
+do_test()
+{
+  log "test"
+}
+
+
 do_remove()
 {
   remove_recipe $seed_name

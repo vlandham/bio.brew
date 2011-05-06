@@ -24,7 +24,8 @@ check_deps()
   local not_installed=""
   for f in ${list_deps[@]} 
   do
-    local install_flag="$LOG_DIR/$f.installed"
+    local base_log=`dirname $LOG_DIR`
+    local install_flag="$base_log/$f/*.installed"
     [ ! -f $install_flag ] && not_installed="$not_installed $f"
   done
   [ ".$not_installed" != "." ] && log "Install deps first:$not_installed" && exit 1
@@ -135,28 +136,6 @@ install_tool()
   local log_file=$LOG_DIR/${seed_name}.install.log.txt
   log "installing tool [logging output: $log_file]"
   make install &> $log_file
-}
-
-link_from_stage()
-{
-  local seed_name=$1; shift
-  local install_files=("$@")
-
-  #first ensure the current link is present
-  # and pointing to the current seed_name dir
-  rm -f $STAGE_DIR/current
-  ln -s $STAGE_DIR/$seed_name $STAGE_DIR/current
-
-  for f in ${install_files[@]} 
-  do
-    local bn=`basename $f`
-    log "linking from staging area [$f]"
-    rm -f $LOCAL_DIR/bin/$bn
-    ln -s $STAGE_DIR/current/$f $LOCAL_DIR/bin/$bn
-    log "Setting permission"
-    [ -f $STAGE_DIR/$seed_name/$f ] && chmod 755 $STAGE_DIR/$seed_name/$f
-  done
-  return 0
 }
 
 download()

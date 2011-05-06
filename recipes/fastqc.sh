@@ -4,7 +4,8 @@ local URL="http://www.bioinformatics.bbsrc.ac.uk/projects/fastqc/fastqc_v0.9.1.z
 local zip_file=`basename $URL`
 local seed_name="fastqc_$version"
 local unzip_dir="FastQC"
-local dep=("java")
+local deps=("java")
+
 do_install()
 {
   cd $STAGE_DIR

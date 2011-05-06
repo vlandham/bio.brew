@@ -12,7 +12,16 @@ do_install()
   mv $TB_DIR/$seed_name $STAGE_DIR/$seed_name
   cd $STAGE_DIR/$seed_name
   make_tool $seed_name $make_j
+}
+
+do_activate()
+{
   link_from_stage $seed_name ${install_files[@]}
+}
+
+do_test()
+{
+  log "test"
 }
 
 do_remove()

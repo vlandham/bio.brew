@@ -23,7 +23,7 @@ find_dist_path()
 }
 
 MAIN_DIR=$(find_dist_path ${BASH_SOURCE[0]})
-load_files=(common.sh install.sh list.sh remove.sh usage.sh)
+load_files=(common.sh install.sh list.sh remove.sh usage.sh activate.sh test.sh fake.sh clean.sh)
 for f in ${load_files[@]}; do source $MAIN_DIR/lib/$f; done
 
 make_j=1
@@ -70,6 +70,22 @@ case $action in
   "remove")
     [ ".$recipe" == "." ] && usage 1 "I need a recipe."
     bb_remove $recipe
+    ;;
+  "activate")
+    [ ".$recipe" == "." ] && usage 1 "I need a recipe."
+    bb_activate $recipe
+    ;;
+  "test")
+    [ ".$recipe" == "." ] && usage 1 "I need a recipe."
+    bb_test $recipe
+    ;;
+  "fake")
+    [ ".$recipe" == "." ] && usage 1 "I need a recipe."
+    bb_fake $recipe
+    ;;
+  "clean")
+    [ ".$recipe" == "." ] && usage 1 "I need a recipe."
+    bb_clean $recipe
     ;;
   *)
     usage 1

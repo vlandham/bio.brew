@@ -21,9 +21,13 @@ picard tools, ...)  as well as crucial UNIX tools (vim, cdargs, etc ...).
 Usage: bb [-v] [-h] COMMAND [recipe]
 
 COMMANDS:
-  list   : list all the available recipes.
-  install: install recipe.
-  remove : remove recipe. 
+  list     : list all the available recipes.
+  install  : install recipe.
+  remove   : remove recipe.
+  test     : run recipe tests.
+  activate : make this recipe live.
+  fake     : pretend to install this recipe.
+  clean    : remove all traces of a recipe. Useful if something goes wrong
 
 OPTIONS:
   -v: print version.

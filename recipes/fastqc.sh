@@ -5,6 +5,7 @@ local zip_file=`basename $URL`
 local seed_name="fastqc_$version"
 local unzip_dir="FastQC"
 local deps=("java")
+local install_files=(fastqc)
 
 do_install()
 {
@@ -15,10 +16,15 @@ do_install()
   unzip $zip_file &> $LOG_DIR/${seed_name}.unzip.log.txt
   mv $unzip_dir $seed_name
   rm -f $zip_file
-  cd ..
-  chmod 755 $STAGE_DIR/$seed_name/fastqc
-  ln -s $STAGE_DIR/$seed_name $STAGE_DIR/current
-  ln -s $STAGE_DIR/current/fastqc $LOCAL_DIR/bin/fastqc
+  #cd ..
+  #chmod 755 $STAGE_DIR/$seed_name/fastqc
+  #ln -s $STAGE_DIR/$seed_name $STAGE_DIR/current
+  #ln -s $STAGE_DIR/current/fastqc $LOCAL_DIR/bin/fastqc
+}
+
+do_activate()
+{
+  link_from_stage $seed_name ${install_files[@]}
 }
 
 do_remove()

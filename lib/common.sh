@@ -1,13 +1,23 @@
 
-VERSION="0.0.1"
-RECIPE_DIR="$MAIN_DIR/recipes"
-LOCAL_DIR="$MAIN_DIR/local"
-TB_DIR="$MAIN_DIR/tarballs"
-LOG_DIR="$MAIN_DIR/logs"
+VERSION="0.0.2"
+
+if [ -z "$BB_RECIPE_INSTALL" ]
+then 
+  BB_RECIPE_INSTALL=$MAIN_DIR
+fi
+
+LOCAL_DIR="$BB_RECIPE_INSTALL/local"
+TB_DIR="$BB_RECIPE_INSTALL/tarballs"
+STAGE_DIR="$BB_RECIPE_INSTALL/stage"
+
 BIN_DIR="$LOCAL_DIR/bin"
 SHARE_DIR="$LOCAL_DIR/share"
 CONTRIB_DIR="$LOCAL_DIR/contrib"
-STAGE_DIR="$MAIN_DIR/stage"
+
+RECIPE_DIR="$MAIN_DIR/recipes"
+LOG_DIR="$MAIN_DIR/logs"
+
+
 
 version()
 {

@@ -21,7 +21,7 @@ remove_recipe()
   rm -rf $TB_DIR/$recipe_name
   log "removing: $STAGE_DIR/$recipe_name"
   rm -rf $STAGE_DIR/$recipe_name
-  rm -r $STAGE_DIR/current
+  rm -rf $STAGE_DIR/current
 }
 
 remove_recipe_using_make()
@@ -38,12 +38,17 @@ remove_from_stage()
 {
   local recipe_name=$1; shift
   local install_files=("$@")
-  for f in ${install_files[@]} 
-  do
-    local bn=`basename $f`
-    log "removing link from from staging area [$f]"
-    rm -f $LOCAL_DIR/bin/$bn
-  done
+  if [ $(check_if_active $recipe_name) == "1" ]
+  then
+    for f in ${install_files[@]} 
+    do
+      local bn=`basename $f`
+      log "removing link from from staging area [$f]"
+      rm -f $LOCAL_DIR/bin/$bn
+    done
+  else
+    log "recipe not active. skipping remove from stage"
+  fi
 }
 
 after_remove()

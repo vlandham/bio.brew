@@ -12,9 +12,22 @@ bb_list()
       local s_deps=""
       source "${r}"
       local full_name="$recipe/$seed_name"
-      [ $(check_if_installed $full_name) == "1" ] && installed="I" || installed="-"
+      # get the dependency list
       for d in "${deps[@]}"; do s_deps="$s_deps $d"; done
-      printf "%s : %-24.24s : %s\n" "$installed" "$seed_name" "$s_deps"
+
+      if [ $(check_any_installed $recipe) == "1" ] 
+      then
+        printf "%s : \n" "$recipe"
+        local all_installed=$(find_all_installed $recipe)
+        for installed_seed in $all_installed
+        do
+          full_name="$recipe/$installed_seed"
+          [ $(check_if_active $full_name) == "1" ] && installed="A" || installed="I"
+          printf "%s : %-24.24s : %s\n" "$installed" "$installed_seed" "$s_deps"
+        done
+      else
+        printf "%s : %-24.24s : %s\n" "$installed" "$seed_name" "$s_deps"
+      fi
       deps=""
     done
   else

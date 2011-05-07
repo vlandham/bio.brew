@@ -79,6 +79,50 @@ check_if_installed()
   [ -f $LOG_DIR/$install_seed_name.installed ] && echo 1 || echo 0
 }
 
+check_any_installed()
+{
+  local recipe_name=$1
+  local installed=$(find_all_installed $recipe_name)
+  [ ".$installed" != "." ] && echo 1 || echo 0
+}
+
+find_all_installed()
+{
+  local recipe=$1
+  local log_dir=$(log_dir_for $recipe)
+
+  # now return array of seed names that are
+  # installed for this recipe
+  # This assumes that at least one seed in this
+  # recipe has been installed. Best to use
+  # check_any_installed before hand
+  local installed_pattern="$log_dir/*.installed"
+  if [ -d $log_dir ] 
+  then
+    local installed_seeds=`ls $installed_pattern`
+    for ins in $installed_seeds; do echo `basename $ins .installed`; done
+  fi
+}
+
+log_dir_for()
+{
+  local recipe_name=$1
+  # appends the recipe name
+  # to the log directory if
+  # that has not been done 
+  # already. Hack to try to
+  # avoid too much confusion with 
+  # having the recipe name as part of the
+  # log dir in most cases
+  local log_dir=$LOG_DIR
+  local log_base_name=`basename $log_dir`
+  if [ "$log_base_name" != "$recipe" ]
+  then
+    log_dir="$LOG_DIR/$recipe"
+  fi
+  echo $log_dir
+}
+
 before_install()
 {
   local recipe_name=$1

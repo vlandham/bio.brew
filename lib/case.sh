@@ -24,7 +24,14 @@ case $bb_action in
   "activate")
     if [ $(check_if_installed $seed_name) == "1" ]
     then
-      do_activate
+      if [ $(check_if_active $seed_name) == "0" ]
+      then
+        before_activate $seed_name
+        do_activate
+        after_activate $seed_name
+      else
+        log "seed already active: $seed_name"
+      fi
     else
       log "recipe not installed."
     fi

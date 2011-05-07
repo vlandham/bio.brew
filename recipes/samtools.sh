@@ -7,19 +7,18 @@ local install_files=(samtools misc/samtools.pl bcftools/bcftools bcftools/vcfuti
 
 do_install()
 {
-  cd $LOCAL_DIR
-  log "svn: checking out $URL"
-  svn co $URL $seed_name &> $LOG_DIR/${seed_name}.svn_co.log.txt
-  mv $seed_name/trunk/$seed_name ./s
-  rm -rf $seed_name
-  mv ./s $seed_name
+  cd $TB_DIR
+  download $URL $tb_file
+  decompress_tool $tb_file $type
   cd $seed_name
   make_tool $seed_name $make_j
-  link_from_stage $recipe ${install_files[@]}
+  cd ..
+  mv $seed_name $STAGE_DIR
 }
 
 do_activate()
 {
+  for_env "export SAMTOOLS_DIR='$STAGE_DIR/$seed_name'"
   link_from_stage $seed_name ${install_files[@]}
 }
 

@@ -96,10 +96,10 @@ find_all_installed()
   # This assumes that at least one seed in this
   # recipe has been installed. Best to use
   # check_any_installed before hand
-  local installed_pattern="$log_dir/*.installed"
+  local installed_pattern="*.installed"
   if [ -d $log_dir ] 
   then
-    local installed_seeds=`ls $installed_pattern`
+    local installed_seeds=`find $log_dir -name "$installed_pattern"`
     for ins in $installed_seeds; do echo `basename $ins .installed`; done
   fi
 }

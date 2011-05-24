@@ -37,6 +37,7 @@ At a minimum, you should define the @BB_PATH@ and @BB_INSTALL@ environmental var
 This will add the bb executable to your path as well as binaries created using bio.brew. Just adding these variables will *not* add the recipe specific ENV variables to your path (see below).
 
 Here is an example setup for basic bio.brew Brew use:
+
 <pre>
 export BB_INSTALL=/home/username/tools
 export BB_PATH=/home/username/tools/bio.brew
@@ -54,15 +55,10 @@ source /data/rogers/drio_scratch/bb/load_env
 That will set the proper path(s). Take a quick peek to load_env, it is a very small script.
 
 
-Once installed the binaries will be in your path so you can just call them. Keep in mind 
-some recipes (packages) do not generate binary files, for those cases, bb creates special
-scripts (log/*.sh) and the necessary ENV vars are created. For example, picard is a bunch
-of jars that cannot be executed directly. By loading the recipe's enviroment you will 
-have a ENV variable called PICARD that points to the jars. It is then very easy to 
+Once installed the binaries will be in your path so you can just call them. Keep in mind some recipes (packages) do not generate binary files, for those cases, bb creates special scripts (log/*.sh) and the necessary ENV vars are created. For example, picard is a bunch of jars that cannot be executed directly. By loading the recipe's enviroment you will have a ENV variable called PICARD that points to the jars. It is then very easy to 
 use the jars as necessary.
 
 h2. Testing
-
 
 At that point you can use ./bin/bb to list, install or remove recipes. You can also run the ``tests/do_all.sh`` script to install all the recipes. That may take some time (20 minutes in a fairly powerful machine with 8 cores and using bb -j8 install).
 
@@ -70,29 +66,28 @@ h2. Using bio.brew
 
 h3. Installing a new recipe
 
-Here we use bio.brew to install subversion. The -j8 is passed to make when compiling
+Here we use bio.brew to install samtools. The -j8 is passed to make when compiling
 
 <pre>
-$ ./bin/bb -j8 install svn
-Sun Oct 31 11:19:38 CDT 2010 >> Installing recipe: svn
-Sun Oct 31 11:19:38 CDT 2010 >> recipe script found
-Sun Oct 31 11:19:38 CDT 2010 >> downloading [http://subversion.tigris.org/downloads/subversion-1.6.13.tar.gz]
-Sun Oct 31 11:19:49 CDT 2010 >> decompressing tarball: subversion-1.6.13.tar.gz (tar.gz)
-Sun Oct 31 11:19:59 CDT 2010 >> downloading [http://subversion.tigris.org/downloads/subversion-deps-1.6.13.tar.gz]
-Sun Oct 31 11:20:05 CDT 2010 >> decompressing tarball: subversion-deps-1.6.13.tar.gz (tar.gz)
-Sun Oct 31 11:20:13 CDT 2010 >> running configure [logging output: /data/rogers/drio_scratch/bb/logs/subversion-1.6.13.configure.log.txt]
-Sun Oct 31 11:21:23 CDT 2010 >> running make on tool [logging output: /data/rogers/drio_scratch/bb/logs/subversion-1.6.13.make.log.txt] [j: 8]
-Sun Oct 31 11:22:55 CDT 2010 >> installing tool [logging output: /data/rogers/drio_scratch/bb/logs/subversion-1.6.13.install.log.txt]
-Sun Oct 31 11:23:16 CDT 2010 >> linking from staging area [bin/svn]
-Sun Oct 31 11:23:16 CDT 2010 >> recipe [subversion-1.6.13] installed.
-Sun Oct 31 11:23:16 CDT 2010 >> removing lock. [/data/rogers/drio_scratch/bb/logs/subversion-1.6.13.lock]
-Sun Oct 31 11:23:16 CDT 2010 >> touching install flag [/data/rogers/drio_scratch/bb/logs/subversion-1.6.13.installed]
+bb list
+# produces a list of possible recipes to install with 
+# the versions of the applications that each recipe is 
+# made for (the seed of the recipe).
+bb install samtools
+# output produced by download and install of samtools
+# if there is an errror, look at log files in $BB_PATH/log/samtools
+bb activate samtools
+# this will create sym links of the newly created binaries 
+# from the samtools staging directory to $BB_INSTALL/bin
+# Having this as a separate step allows you to download an update
+# and test it without it replacing your current version of a tool.
 </pre>
 
 As you can see, it is now installed in bio.brew's local directory
 
-$ ls -acl ./local/bin/svn
-./local/bin/svn
+<pre>
+$ ls -acl $BB_INSTALL/bin 
+</pre>
 
 h2. TODO
 

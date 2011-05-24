@@ -1,6 +1,6 @@
-# Bio Brew
+h1. Bio Brew
 
-## Introduction
+h2. Introduction
 
 Imagine you get access to a new linux box or HPC cluster. You want to start doing 
 your analysis, coding, data-mining but you do not have your toolbox available. Yes, 
@@ -17,16 +17,31 @@ and inseparable unix tools bb comes with some bioinformatics gems.
 
 Give it a try and make it better by improving the framework and adding more recipes.
 
-## Install (without git)
+h2. Install
 
+There are a few ways to install and configure Bio Brew. My preferred method involves
+checking out the source from github using git. The requirement for this method is 
+of course that you need git installed on your system.
+
+h3. Install with git
+
+git clone git://github.com/vlandham/bio.brew.git
+
+h3. Install without git
+
+<pre>
 $ # Download the master branch using curl
 $ # -L follow redirects; -s silent; -S show error message if fails; -f fail silently on server errors
 $ curl -LsSf http://github.com/drio/bio.brew/tarball/master | tar xvz -C. --strip 1
+</pre>
 
-You probably want to add ./load_env in your shell's configuration file. If you use bash add
-this to your .bashrc:
+h2. Configuration
 
+The small script load_env has been provided to give one option for configuring Bio Brew. You can add ./load_env to your shell's configuration file. For bash, this would look like: 
+
+<pre>
 source /data/rogers/drio_scratch/bb/load_env    
+</pre>
 
 That will set the proper path(s). Take a quick peek to load_env, it is a very small script.
 

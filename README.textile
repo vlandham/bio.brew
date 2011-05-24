@@ -2,32 +2,25 @@ h1. Bio Brew
 
 h2. Introduction
 
-Imagine you get access to a new linux box or HPC cluster. You want to start doing 
-your analysis, coding, data-mining but you do not have your toolbox available. Yes, 
-you can ask the sysadmins to install that for you. That may work. You may also install
-the tools yourself. 
+Imagine you get access to a new linux box or HPC cluster. You want to start doing your analysis, coding, data-mining but you do not have your toolbox available. Yes, you can ask the sysadmins to install that for you. That may work. You may also install the tools yourself.
 
-BB (biobrew) helps you either way. With a simple oneliner you can have most of your
-tools ready to use.  BB is a tiny package manager based entirely in bash. It makes the 
-extension of recipes (package definitions) very easy. 
+BB (biobrew) helps you either way. With a simple oneliner you can have most of your tools ready to use.  BB is a tiny package manager based entirely in bash. It makes the extension of recipes (package definitions) very easy. 
 
-BB currently works in Linux enviroments (it should work just fine in other flavours of 
-Unix). It only needs a typical Linux enviroment with gcc and curl. Besides my classic 
-and inseparable unix tools bb comes with some bioinformatics gems.  
+BB currently works in Linux enviroments (it should work just fine in other flavours of Unix). It only needs a typical Linux enviroment with gcc and curl. Besides my classic and inseparable unix tools bb comes with some bioinformatics gems.  
 
 Give it a try and make it better by improving the framework and adding more recipes.
 
 h2. Install
 
-There are a few ways to install and configure Bio Brew. My preferred method involves
-checking out the source from github using git. The requirement for this method is 
-of course that you need git installed on your system.
+There are a few ways to install and configure bio.brew. My (current) preferred method involves checking out the source from github using git and then using the minimum configuration setup as detailed below. The requirement for this method is of course that you need git installed on your system.
 
 h3. Install with git
 
 git clone git://github.com/vlandham/bio.brew.git
 
 h3. Install without git
+
+Another potential option is to use curl:
 
 <pre>
 $ # Download the master branch using curl
@@ -37,7 +30,22 @@ $ curl -LsSf http://github.com/drio/bio.brew/tarball/master | tar xvz -C. --stri
 
 h2. Configuration
 
-The small script load_env has been provided to give one option for configuring Bio Brew. You can add ./load_env to your shell's configuration file. For bash, this would look like: 
+h3. Minimum Configuration
+
+At a minimum, you should define the @BB_PATH@ and @BB_INSTALL@ environmental variables and add @$BB_INSTALL/bin@ and @$BB_PATH/bin@ to your @PATH@. 
+
+This will add the bb executable to your path as well as binaries created using bio.brew. Just adding these variables will *not* add the recipe specific ENV variables to your path (see below).
+
+Here is an example setup for basic bio.brew Brew use:
+<pre>
+export BB_INSTALL=/home/username/tools
+export BB_PATH=/home/username/tools/bio.brew
+PATH="$BB_INSTALL/bin:$BB_PATH/bin:$PATH"
+</pre>
+
+h3. load_env Helper Script
+
+The small script load_env has been provided to give one option for configuring bio.brew. You can add ./load_env to your shell's configuration file. For bash, this would look like: 
 
 <pre>
 source /data/rogers/drio_scratch/bb/load_env    
@@ -45,9 +53,6 @@ source /data/rogers/drio_scratch/bb/load_env
 
 That will set the proper path(s). Take a quick peek to load_env, it is a very small script.
 
-At that point you can use ./bin/bb to list, install or remove recipes. You can also run the 
-``tests/do_all.sh`` script to install all the recipes. That may take some time (20 minutes 
-in a fairly powerful machine with 8 cores and using bb -j8 install).
 
 Once installed the binaries will be in your path so you can just call them. Keep in mind 
 some recipes (packages) do not generate binary files, for those cases, bb creates special
@@ -56,12 +61,18 @@ of jars that cannot be executed directly. By loading the recipe's enviroment you
 have a ENV variable called PICARD that points to the jars. It is then very easy to 
 use the jars as necessary.
 
-## Using bio.brew
+h2. Testing
 
-### Installing a new recipe
+
+At that point you can use ./bin/bb to list, install or remove recipes. You can also run the ``tests/do_all.sh`` script to install all the recipes. That may take some time (20 minutes in a fairly powerful machine with 8 cores and using bb -j8 install).
+
+h2. Using bio.brew
+
+h3. Installing a new recipe
 
 Here we use bio.brew to install subversion. The -j8 is passed to make when compiling
 
+<pre>
 $ ./bin/bb -j8 install svn
 Sun Oct 31 11:19:38 CDT 2010 >> Installing recipe: svn
 Sun Oct 31 11:19:38 CDT 2010 >> recipe script found
@@ -76,13 +87,14 @@ Sun Oct 31 11:23:16 CDT 2010 >> linking from staging area [bin/svn]
 Sun Oct 31 11:23:16 CDT 2010 >> recipe [subversion-1.6.13] installed.
 Sun Oct 31 11:23:16 CDT 2010 >> removing lock. [/data/rogers/drio_scratch/bb/logs/subversion-1.6.13.lock]
 Sun Oct 31 11:23:16 CDT 2010 >> touching install flag [/data/rogers/drio_scratch/bb/logs/subversion-1.6.13.installed]
+</pre>
 
 As you can see, it is now installed in bio.brew's local directory
 
 $ ls -acl ./local/bin/svn
 ./local/bin/svn
 
-## TODO
+h2. TODO
 
 + Allow specific options for actions (-j should not be generic, only for install).
 + Extend readme to should how to deal with jars.

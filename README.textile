@@ -3,6 +3,18 @@ h1. Bio Brew
 Simple package manager for bioinformatic tools.
 Fork of "drio's biobrew":https://github.com/drio/bio.brew with some slight architecture changes.
 
+h2. Introduction
+
+Imagine you get access to a new linux box or HPC cluster. You want to start doing your analysis, coding, data-mining but you do not have your toolbox available. Yes, you can ask the sysadmins to install that for you. That may work. You may also install the tools yourself.
+
+BB (biobrew) helps you either way. With a simple oneliner you can have most of your tools ready to use.  BB is a tiny package manager based entirely in bash. It makes the extension of recipes (package definitions) very easy. 
+
+BB currently works in Linux enviroments (it should work just fine in other flavours of Unix). It only needs a typical Linux enviroment with gcc, curl (and potentially git). Besides classic and inseparable unix tools, bio.brew's focus is on bioinformatic tools and packages. 
+
+bio.brew has a similar feel to it as the "homebrew":https://github.com/mxcl/homebrew package manager for Mac OSX. The difference being that it is much more lean in terms of functionality and packages provided, it is written entirely in shell instead of a mixture of shell and ruby, it works on more than just Mac OSX, and its focus is only on core bioinformatic tools.
+
+Give it a try and make it better by improving the framework and adding more recipes.
+
 h2. Differences from Original bio.brew
 
 * The recipe seed name is a more fundamental part of the system architecture now. Recipes are defined by the combination of the recipe name as well as the seed name. In effect, the *recipe name* describes a *tool* and the *seed name* indicates a specific *version* of that tool.
@@ -28,19 +40,9 @@ These changes were made because of the nature of the environment we wanted bio.b
 * Not all the recipes have been modified to use the new methodology. See bamtools.sh or cufflinks.sh for examples of recipes that do use the new setup and conventions.
 * The test script(s) has not been tested and will probably not work.
 
-h2. Introduction
-
-Imagine you get access to a new linux box or HPC cluster. You want to start doing your analysis, coding, data-mining but you do not have your toolbox available. Yes, you can ask the sysadmins to install that for you. That may work. You may also install the tools yourself.
-
-BB (biobrew) helps you either way. With a simple oneliner you can have most of your tools ready to use.  BB is a tiny package manager based entirely in bash. It makes the extension of recipes (package definitions) very easy. 
-
-BB currently works in Linux enviroments (it should work just fine in other flavours of Unix). It only needs a typical Linux enviroment with gcc and curl. Besides my classic and inseparable unix tools bb comes with some bioinformatics gems.  
-
-Give it a try and make it better by improving the framework and adding more recipes.
-
 h2. Install
 
-There are a few ways to install and configure bio.brew. My (current) preferred method involves checking out the source from github using git and then using the minimum configuration setup as detailed below. The requirement for this method is of course that you need git installed on your system.
+There are a few ways to install and configure bio.brew. My (current) preferred method involves *checking out the source from github using git* and then using the *bb_load_env* setup as detailed below. The requirement for this method is of course that you need git installed on your system.
 
 h3. Install with git
 
@@ -48,12 +50,12 @@ git clone git://github.com/vlandham/bio.brew.git
 
 h3. Install without git
 
-Another potential option is to use curl:
+Another potential (untested/unused) option is to use curl:
 
 <pre>
 $ # Download the master branch using curl
-$ # -L follow redirects; -s silent; -S show error message if fails; -f fail silently on server errors
-$ curl -LsSf http://github.com/drio/bio.brew/tarball/master | tar xvz -C. --strip 1
+$ # -L follow redirects; -s silent; -S show error message if fails; -f fail silently on server errors -k ssl issues
+$ curl -LksSf http://github.com/vlandham/bio.brew/tarball/master | tar xvz -C. --strip 1
 </pre>
 
 h2. Configuration

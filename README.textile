@@ -21,6 +21,14 @@ h2. Differences from Original bio.brew
 ** *test* - stubbed functionality that could be used in the future to add testing for a recipe/seed before it is activated.
 ** *fake* - If there is a dependency in a recipe, but you don't want to use bio.brew to install the dependency, use fake to have bio.brew think that it is installed. (Most useful for java dependencies).
 
+h2. Cavets 
+
+These changes were made because of the nature of the environment we wanted bio.brew to work in - and because we believe it is very useful to be able to keep older versions of these tools around as necessary. I feel these changes are an improvement, but there are some things not completely integrated from the original bio.brew:
+
+* Not all the recipes have been modified to use the new methodology. See bamtools.sh or cufflinks.sh for examples of recipes that do use the new setup and conventions.
+* The use of recipe specific ENV variables has not been tested
+* The test script(s) has not been tested and will probably not work.
+
 h2. Introduction
 
 Imagine you get access to a new linux box or HPC cluster. You want to start doing your analysis, coding, data-mining but you do not have your toolbox available. Yes, you can ask the sysadmins to install that for you. That may work. You may also install the tools yourself.

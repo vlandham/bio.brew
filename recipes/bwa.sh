@@ -1,23 +1,26 @@
 
-local URL="https://bio-bwa.svn.sourceforge.net/svnroot/bio-bwa"
+local version="0.5.9"
+local type="tar.bz2"
+local seed_name="bwa_${version}"
+local URL="http://sourceforge.net/projects/bio-bwa/files/bwa-${version}.${type}"
 local tb_file=`basename $URL`
-local seed_name="bwa"
+local tb_dir=`basename $tb_file .$type`
 local install_files=(bwa solid2fastq.pl)
-local deps=("subversion-1.6.13")
+local deps=("svn")
 
 do_install()
 {
-  cd $LOCAL_DIR
-  log "svn: checking out $URL"
-  svn co $URL $seed_name &> $LOG_DIR/${seed_name}.svn_co.log.txt
-  mv $seed_name/trunk/$seed_name ./b
-  rm -rf $seed_name
-  mv ./b $seed_name
-  cd $seed_name
-  log "autogen"
-  sh ./autogen.sh &> $LOG_DIR/${seed_name}.autogen.log.txt
+  cd $TB_DIR
+  download $URL $tb_file
+  decompress_tool $tb_file $type
+  mv $tb_dir $STAGE_DIR/$seed_name
+  cd $STAGE_DIR/$seed_name
   make_tool $seed_name $make_j
-  link_from_stage $recipe ${install_files[@]}
+}
+
+do_activate()
+{
+  link_from_stage $seed_name ${install_files[@]}
 }
 
 do_remove()

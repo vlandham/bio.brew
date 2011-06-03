@@ -62,17 +62,23 @@ h3. Minimum Configuration
 
 At a minimum, you should define the @BB_PATH@ and @BB_INSTALL@ environmental variables and add @$BB_INSTALL/bin@ and @$BB_PATH/bin@ to your @PATH@. 
 
+@BB_PATH@ defines the *location of the bio.brew package*, while @BB_INSTALL@ tells bio.brew *where to install tools@.
+
 This will add the bb executable to your path as well as binaries created using bio.brew. Just adding these variables will *not* add the recipe specific ENV variables to your path (see below).
 
-Here is an example setup for basic bio.brew Brew use:
+Here is an example setup for basic bio.brew Brew use. This example assumes you have the bio.brew tool downloaded to the directory: @/home/username/bio.brew@ and want bio.brew to install tools at @/home/username/tools@
 
 <pre>
 export BB_INSTALL=/home/username/tools
 export BB_PATH=/home/username/tools/bio.brew
-PATH="$BB_INSTALL/bin:$BB_PATH/bin:$PATH"
+export PATH="$BB_INSTALL/bin:$BB_PATH/bin:$PATH"
 </pre>
 
-h3. load_env Helper Script
+With this configuration, bio.brew will download tar/zip packages to @/home/username/tools/tarballs@ extract and build these packages in @/home/username/tools/stage@ and then symbolically link the correct binaries from these packages into @/home/username/tools/bin@.
+
+The @bb_load_env@ script described below automates most of this path configuration. It also provides the *extra benefit* of also adding ENV variables that are setup by particular recipes. This is described in a bit more detail in the Using bio.brew section below. 
+
+h3. bb_load_env Helper Script
 
 The small script @bb_load_env@ has been provided to give one option for configuring bio.brew. You can add @bb_load_env@ to your shell's configuration file. A default value for @BB_INSTALL@ is provided in @bb_load_env@, but I would specifiy explictly where you want to download these files. For bash, this would look like: 
 
@@ -84,11 +90,22 @@ export BB_INSTALL=/home/username/tools
 
 That will set the proper path(s). Take a quick peek to load_env, it is a very small script.
 
+h2. Using bio.brew
+
 Once installed the binaries will be in your path so you can just call them. 
 
 Keep in mind some recipes (packages) do not generate binary files, for those cases, bb creates special scripts (log/*.sh) and the necessary ENV vars are created. For example, picard is a bunch of jars that cannot be executed directly. By loading the recipe's enviroment you will have a ENV variable called PICARD that points to the jars. It is then very easy to use the jars as necessary.
 
-h2. Using bio.brew
+For example, once picard is installed and activated, assuming you have sourced the @bb_load_env@ script in your @.bashrc@ as described above, you could use picard jar files without knowing where exactly picard is installed:
+
+<pre>
+ls $PICARD
+# outputs all jars in picard directory.
+
+java -Xmx2g -jar $PICARD/BamToBfq.jar [options]
+</pre>
+
+Its just that easy!
 
 h3. Installing a new recipe
 

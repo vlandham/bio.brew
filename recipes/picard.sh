@@ -18,7 +18,6 @@ do_install()
 
 do_activate()
 {
-
   ln -s $STAGE_DIR/$seed_name $STAGE_DIR/current
   for_env "export PICARD='$STAGE_DIR/current'"
 }

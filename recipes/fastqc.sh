@@ -1,6 +1,7 @@
 
 local version="0.9.1"
-local URL="http://www.bioinformatics.bbsrc.ac.uk/projects/fastqc/fastqc_v0.9.1.zip"
+local type="zip"
+local URL="http://www.bioinformatics.bbsrc.ac.uk/projects/fastqc/fastqc_v${version}.${type}"
 local zip_file=`basename $URL`
 local seed_name="fastqc_$version"
 local unzip_dir="FastQC"
@@ -9,17 +10,10 @@ local install_files=(fastqc)
 
 do_install()
 {
-  cd $STAGE_DIR
-  log "Downloading"
-  curl -sL $URL > ${zip_file}
-  log "Unzipping ($zip_file)"
-  unzip $zip_file &> $LOG_DIR/${seed_name}.unzip.log.txt
-  mv $unzip_dir $seed_name
-  rm -f $zip_file
-  #cd ..
-  #chmod 755 $STAGE_DIR/$seed_name/fastqc
-  #ln -s $STAGE_DIR/$seed_name $STAGE_DIR/current
-  #ln -s $STAGE_DIR/current/fastqc $LOCAL_DIR/bin/fastqc
+  cd $TB_DIR
+  download $URL $tb_file
+  decompress_tool $zip_file $type
+  mv $unzip_dir $STAGE_DIR/$seed_name
 }
 
 do_activate()
@@ -29,9 +23,8 @@ do_activate()
 
 do_remove()
 {
-  rm -rf $STAGE_DIR/$seed_name
-  rm -f $LOCAL_DIR/bin/fastqc
-  rm -f $STAGE_DIR/current
+  remove_recipe $seed_name
+  remove_from_stage $seed_name ${install_files[@]}
 }
 
 source "$MAIN_DIR/lib/case.sh"

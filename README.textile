@@ -64,7 +64,7 @@ h3. Minimum Configuration
 
 At a minimum, you should define the @BB_PATH@ and @BB_INSTALL@ environmental variables and add @$BB_INSTALL/bin@ and @$BB_PATH/bin@ to your @PATH@. 
 
-@BB_PATH@ defines the *location of the bio.brew package*, while @BB_INSTALL@ tells bio.brew *where to install tools@.
+@BB_PATH@ defines the *location of the bio.brew package*, while @BB_INSTALL@ tells bio.brew *where to install tools*.
 
 This will add the bb executable to your path as well as binaries created using bio.brew. Just adding these variables will *not* add the recipe specific ENV variables to your path (see below).
 
@@ -94,21 +94,6 @@ That will set the proper path(s). Take a quick peek to load_env, it is a very sm
 
 h2. Using bio.brew
 
-Once installed the binaries will be in your path so you can just call them. 
-
-Keep in mind some recipes (packages) do not generate binary files, for those cases, bb creates special scripts (log/*.sh) and the necessary ENV vars are created. For example, picard is a bunch of jars that cannot be executed directly. By loading the recipe's enviroment you will have a ENV variable called PICARD that points to the jars. It is then very easy to use the jars as necessary.
-
-For example, once picard is installed and activated, assuming you have sourced the @bb_load_env@ script in your @.bashrc@ as described above, you could use picard jar files without knowing where exactly picard is installed:
-
-<pre>
-ls $PICARD
-# outputs all jars in picard directory.
-
-java -Xmx2g -jar $PICARD/BamToBfq.jar [options]
-</pre>
-
-Its just that easy!
-
 h3. Installing a new recipe
 
 Here we use bio.brew to install samtools. The -j8 is passed to make when compiling
@@ -134,11 +119,38 @@ As you can see, it is now installed in bio.brew's local directory
 $ ls -acl $BB_INSTALL/bin 
 </pre>
 
+h3. Using Tools
+
+Once installed the binaries will be in your path so you can just call them. 
+
+<pre>
+$ which samtools
+# should output path $BB_INSTALL/bin/samtools
+
+$ samtools view [options]
+</pre>
+
+Keep in mind some recipes (packages) do not generate binary files, for those cases, bb creates special scripts (log/*.sh) and the necessary ENV vars are created. For example, picard is a bunch of jars that cannot be executed directly. By loading the recipe's enviroment you will have a ENV variable called PICARD that points to the jars. It is then very easy to use the jars as necessary.
+
+For example, once picard is installed and activated, assuming you have sourced the @bb_load_env@ script in your @.bashrc@ as described above, you could use picard jar files without knowing where exactly picard is installed:
+
+<pre>
+$ ls $PICARD
+# outputs all jars in picard directory.
+
+$ java -Xmx2g -jar $PICARD/BamToBfq.jar [options]
+</pre>
+
+Its just that easy!
 h2. Testing
+
+*untested*
 
 At that point you can use ./bin/bb to list, install or remove recipes. You can also run the ``tests/do_all.sh`` script to install all the recipes. That may take some time (20 minutes in a fairly powerful machine with 8 cores and using bb -j8 install).
 
 h2. TODO
 
-+ Allow specific options for actions (-j should not be generic, only for install).
-+ Extend readme to should how to deal with jars.
+* Allow specific options for actions (-j should not be generic, only for install).
+* more recipes!
+* better support for moving between seeds of a recipe
+* better support for removing recipes accurately and cleanly

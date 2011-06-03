@@ -21,6 +21,8 @@ remove_recipe()
   rm -rf $TB_DIR/$recipe_name
   log "removing: $STAGE_DIR/$recipe_name"
   rm -rf $STAGE_DIR/$recipe_name
+  log "removing current link."
+  log "reset current link for this recipe to previous seed manually"
   rm -rf $STAGE_DIR/current
 }
 
@@ -40,6 +42,7 @@ remove_from_stage()
   local install_files=("$@")
   if [ $(check_if_active $recipe_name) == "1" ]
   then
+    deactivate_recipe $recipe_name
     for f in ${install_files[@]} 
     do
       local bn=`basename $f`

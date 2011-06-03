@@ -52,3 +52,14 @@ link_from_stage()
   return 0
 }
 
+deactivate_recipe()
+{
+  local active_seed_name=$1;
+  if [ $(check_if_active $active_seed_name) == "1" ]
+  then
+    rm -f $LOG_DIR/$active_seed_name.active
+  else
+    log "recipe seed not active [$active_seed_name]"
+  fi
+}
+

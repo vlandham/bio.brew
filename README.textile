@@ -142,6 +142,7 @@ $ java -Xmx2g -jar $PICARD/BamToBfq.jar [options]
 </pre>
 
 Its just that easy!
+
 h2. Testing
 
 *untested*

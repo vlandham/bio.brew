@@ -86,8 +86,8 @@ The small script @bb_load_env@ has been provided to give one option for configur
 
 <pre>
 # .bashrc
-export BB_INSTALL=/home/username/tools
-[[ -s "/home/username/tools/bio.brew/bb_load_env" ]] && source "/home/username/tools/bio.brew/bb_load_env"
+# Assumes BB_INSTALL set as above
+[[ -s "$BB_INSTALL/bio.brew/bb_load_env" ]] && source "$BB_INSTALL/bio.brew/bb_load_env"
 </pre>
 
 That will set the proper path(s). Take a quick peek to load_env, it is a very small script.

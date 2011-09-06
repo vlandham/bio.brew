@@ -1,7 +1,9 @@
-local version="0.1.16"
-local URL="https://sourceforge.net/projects/samtools/files/samtools/0.1.16/samtools-${version}.tar.bz2"
-local tb_file=`basename $URL`
+local version="0.1.18"
 local type="tar.bz2"
+# sourceforge mirror was found by copying download link in 
+# Firefox's download manager.
+local URL="http://superb-sea2.dl.sourceforge.net/project/samtools/samtools/${version}/samtools-${version}.${type}"
+local tb_file=`basename $URL`
 local seed_name="samtools-${version}"
 local install_files=(samtools misc/samtools.pl bcftools/bcftools bcftools/vcfutils.pl)
 

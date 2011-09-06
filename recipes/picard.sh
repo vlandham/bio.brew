@@ -1,5 +1,5 @@
 
-local version="1.46"
+local version="1.52"
 local type="zip"
 local tb_file="picard-tools-${version}.${type}"
 local URL="http://sourceforge.net/projects/picard/files/picard-tools/${version}/${tb_file}"

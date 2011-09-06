@@ -143,6 +143,45 @@ $ java -Xmx2g -jar $PICARD/BamToBfq.jar [options]
 
 Its just that easy!
 
+h2. How I Use bio.brew
+
+As an example setup, here is how I've installed and setup bio.brew on OSX 10.5.8. Setup should be very similar for other versions of OS X as well as Linux distributions.
+
+First, I created a @tools@ directory in my home directory and cloned the bio.brew repo there:
+
+<pre>
+mkdir ~/tools
+cd ~/tools
+git clone git@github.com:vlandham/bio.brew.git
+</pre>
+
+Then I added the following to my @.bashrc@ file:
+
+<pre>
+export BB_INSTALL=~/tools
+export BB_PATH=~/tools/bio.brew
+PATH="$BB_INSTALL/bin:$BB_PATH/bin:$PATH"
+export PATH
+
+[[ -s "$BB_INSTALL/bio.brew/bb_load_env" ]] && source "$BB_INSTALL/bio.brew/bb_load_env"
+</pre>
+
+This indicates that all my bio.brew recipes will be installed in the @bin@ directory under @~/tools@
+
+As I manage java, subversion, and other packages externally of bio.brew, I first fake these inside of bio.brew to satisfy dependencies
+
+<pre>
+bb fake java
+bb fake svn
+</pre>
+
+Now I'm ready to use bio.brew to install and manage my bioinformatic packages!
+
+<pre>
+bb install bowtie
+bb activate bowtie
+</pre>
+
 h2. Testing
 
 *untested*

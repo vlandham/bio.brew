@@ -1,5 +1,5 @@
 
-local version="1.0.5777"
+local version="1.1-37-ge63d9d8"
 local type="tar.bz2"
 local URL="ftp://ftp.broadinstitute.org/pub/gsa/GenomeAnalysisTK/GenomeAnalysisTK-${version}.${type}"
 local tb_file=`basename $URL`

@@ -1,5 +1,6 @@
 
-local version="1.1-37-ge63d9d8"
+#local version="1.1-37-ge63d9d8"
+local version="1.2-62-g41ddc7b"
 local type="tar.bz2"
 local URL="ftp://ftp.broadinstitute.org/pub/gsa/GenomeAnalysisTK/GenomeAnalysisTK-${version}.${type}"
 local tb_file=`basename $URL`
@@ -17,6 +18,7 @@ do_install()
 
 do_activate()
 {
+  rm -rf $STAGE_DIR/current
   ln -s $STAGE_DIR/$seed_name $STAGE_DIR/current
   for_env "export GATK='$STAGE_DIR/current'"
 }

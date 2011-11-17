@@ -1,5 +1,5 @@
 
-local version="0.5.9"
+local version="0.6.0"
 local type="tar.bz2"
 local seed_name="bwa_${version}"
 local URL="http://sourceforge.net/projects/bio-bwa/files/bwa-${version}.${type}"

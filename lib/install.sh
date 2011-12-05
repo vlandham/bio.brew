@@ -216,6 +216,9 @@ decompress_tool()
     "tar.bz2")
       tar jxf $tb_file
     ;;
+    "tgz")
+      tar zxf $tb_file
+    ;;
     "zip")
       unzip $tb_file
     ;;

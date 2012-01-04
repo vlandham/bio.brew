@@ -14,6 +14,7 @@ do_install()
   configure_tool $seed_name
   make_tool $seed_name $make_j
   install_tool $seed_name
+  rm -rf $TB_DIR/$seed_name
 }
 
 do_activate()

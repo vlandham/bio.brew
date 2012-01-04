@@ -30,15 +30,22 @@ check_if_active()
   [ -f $LOG_DIR/$active_seed_name.active ] && echo 1 || echo 0
 }
 
-link_from_stage()
+switch_current()
 {
   local seed_name=$1; shift
-  local install_files=("$@")
 
   #first ensure the current link is present
   # and pointing to the current seed_name dir
   rm -f $STAGE_DIR/current
   ln -s $STAGE_DIR/$seed_name $STAGE_DIR/current
+}
+
+link_from_stage()
+{
+  local seed_name=$1; shift
+  local install_files=("$@")
+
+  switch_current $seed_name
 
   for f in ${install_files[@]} 
   do

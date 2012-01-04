@@ -1,7 +1,8 @@
-local URL="https://sourceforge.net/projects/gnuplot/files/gnuplot/4.4.3/gnuplot-4.4.3.tar.gz"
-local tb_file=`basename $URL`
+local version="4.4.4"
 local type="tar.gz"
-local seed_name="gnuplot-4.4.3"
+local URL="http://sourceforge.net/projects/gnuplot/files/gnuplot/${version}/gnuplot-${version}.${type}"
+local tb_file=`basename $URL`
+local seed_name="gnuplot-${version}"
 local install_files=(bin/gnuplot)
 
 do_install()
@@ -13,7 +14,16 @@ do_install()
   configure_tool $seed_name
   make_tool $seed_name $make_j
   install_tool $seed_name
+}
+
+do_activate()
+{
   link_from_stage $seed_name ${install_files[@]}
+}
+
+do_test()
+{
+  log "test"
 }
 
 do_remove()

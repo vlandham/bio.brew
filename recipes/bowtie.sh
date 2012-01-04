@@ -1,7 +1,8 @@
-local URL="http://downloads.sourceforge.net/project/bowtie-bio/bowtie/0.12.7/bowtie-0.12.7-src.zip"
-local tb_file=`basename $URL`
+local version="0.12.7"
 local type="zip"
-local seed_name="bowtie-0.12.7"
+local URL="http://downloads.sourceforge.net/project/bowtie-bio/bowtie/${version}/bowtie-${version}-src.${type}"
+local tb_file=`basename $URL`
+local seed_name="bowtie-${version}"
 local install_files=(bowtie bowtie-build bowtie-inspect)
 
 do_install()

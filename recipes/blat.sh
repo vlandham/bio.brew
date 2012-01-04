@@ -1,7 +1,7 @@
 local version="34"
-local URL="http://hgwdev.cse.ucsc.edu/~kent/src/blatSrc${version}.zip"
-local tb_file=`basename $URL`
 local type="zip"
+local URL="http://hgwdev.cse.ucsc.edu/~kent/src/blatSrc${version}.${type}"
+local tb_file=`basename $URL`
 local seed_name="blatSrc"
 local install_files=(bin/blat bin/pslPretty bin/pslReps bin/pslSort)
 

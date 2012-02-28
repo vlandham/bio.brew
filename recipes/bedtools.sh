@@ -1,4 +1,4 @@
-local version="2.14.3"
+local version="2.15.0"
 local type="tar.gz"
 local URL="http://bedtools.googlecode.com/files/BEDTools.v${version}.${type}"
 local tb_file=`basename $URL`
@@ -9,7 +9,8 @@ bin/overlap bin/annotateBed bin/subtractBed bin/maskFastaFromBed
 bin/windowBed bin/sortBed bin/unionBedGraphs bin/genomeCoverageBed 
 bin/pairToPair bin/fastaFromBed bin/bedToBam bin/pairToBed 
 bin/flankBed bin/bedToIgv bin/intersectBed bin/shuffleBed 
-bin/fjoin bin/cuffToTrans bin/bamToBed)
+bin/fjoin bin/cuffToTrans bin/bamToBed bin/multiIntersectBed 
+bin/multiBamCov bin/tabBam bin/nucBed bin/tagBam bin/nuclBed bin/groupBy)
 
 do_install()
 {
@@ -20,6 +21,7 @@ do_install()
   make_tool $seed_name $make_j
   cd ..
   mv $seed_name $STAGE_DIR
+  cp -r $STAGE_DIR/$seed_name ../BEDtools
 }
 
 do_activate()

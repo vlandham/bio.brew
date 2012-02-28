@@ -1,4 +1,4 @@
-local version="1.3.3"
+local version="1.4.1"
 local seed_name="tophat_$version"
 local platform="Linux_x86_64"
 local type="tar.gz"
@@ -19,6 +19,7 @@ do_install()
   decompress_tool $tb_file $type
   mv $tb_dir $seed_name
   mv $seed_name $STAGE_DIR
+  cp -r $STAGE_DIR/$seed_name ../tophat
 }
 
 do_activate()

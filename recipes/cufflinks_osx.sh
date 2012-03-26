@@ -1,5 +1,5 @@
 local version="1.3.0"
-local seed_name="cufflinks_$version"
+local seed_name="cufflinks_mac_$version"
 local type="tar.gz"
 local URL="http://cufflinks.cbcb.umd.edu/downloads/cufflinks-${version}.OSX_x86_64.${type}"
 local tb_file=`basename $URL`

@@ -131,8 +131,10 @@ before_install()
   mkdir -p $TB_DIR
   mkdir -p $LOG_DIR
   mkdir -p $BIN_DIR
-  mkdir -p $SHARE_DIR
-  mkdir -p $CONTRIB_DIR
+  mkdir -p $ETC_DIR
+  mkdir -p $LIB_DIR
+  mkdir -p $MAN_DIR
+
   [ -f $LOG_DIR/$recipe_name.lock ] && usage 1 "Other instance is working on $recipe_name. Bailing out."
   touch $LOG_DIR/$recipe_name.lock
 }

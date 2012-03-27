@@ -11,6 +11,12 @@ bb install tool
 
 Where @tool@ is your tool's name. 
 
+h2. Creating a Recipe
+
+See "bio.brew's example recipe":https://github.com/vlandham/bio.brew/blob/master/recipes/example.sh to get a feel for how a recipe should look. 
+
+In practice, a new recipe will usually start as a copy of an existing recipe tweaked to work.
+
 h2. Install
 
 There are a few ways to install and configure bio.brew. My (current) preferred method involves *checking out the source from github using git* and then using the *bb_load_env* setup as detailed below. The requirement for this method is of course that you need git installed on your system.

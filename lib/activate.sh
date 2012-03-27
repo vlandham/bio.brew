@@ -30,15 +30,6 @@ check_if_active()
   [ -f $LOG_DIR/$active_seed_name.active ] && echo 1 || echo 0
 }
 
-switch_current()
-{
-  local seed_name=$1; shift
-
-  #first ensure the current link is present
-  # and pointing to the current seed_name dir
-  rm -f $STAGE_DIR/current
-  ln -s $STAGE_DIR/$seed_name $STAGE_DIR/current
-}
 
 deactivate_recipe()
 {

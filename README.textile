@@ -3,42 +3,13 @@ h1. Bio Brew
 Simple package manager for bioinformatic tools.
 Fork of "drio's biobrew":https://github.com/drio/bio.brew with some slight architecture changes.
 
-h2. Introduction
+Allows you to write _recipes_ that describe how to install your favorite bioinfo tool. Once a recipe is written, you can install it simply with:
 
-Imagine you get access to a new linux box or HPC cluster. You want to start doing your analysis, coding, data-mining but you do not have your toolbox available. Yes, you can ask the sysadmins to install that for you. That may work. You may also install the tools yourself.
+<pre>
+bb install tool
+</pre>
 
-BB (biobrew) helps you either way. With a simple oneliner you can have most of your tools ready to use.  BB is a tiny package manager based entirely in bash. It makes the extension of recipes (package definitions) very easy. 
-
-BB currently works in Linux enviroments (it should work just fine in other flavours of Unix). It only needs a typical Linux enviroment with gcc, curl (and potentially git). Besides classic and inseparable unix tools, bio.brew's focus is on bioinformatic tools and packages. 
-
-bio.brew has a similar feel to it as the "homebrew":https://github.com/mxcl/homebrew package manager for Mac OSX. The difference being that it is much more lean in terms of functionality and packages provided, it is written entirely in shell instead of a mixture of shell and ruby, it works on more than just Mac OSX, and its focus is only on core bioinformatic tools.
-
-Give it a try and make it better by improving the framework and adding more recipes.
-
-h2. Differences from Original bio.brew
-
-* The recipe seed name is a more fundamental part of the system architecture now. Recipes are defined by the combination of the recipe name as well as the seed name. In effect, the *recipe name* describes a *tool* and the *seed name* indicates a specific *version* of that tool.
-* The above architecture allows and encourages keeping multiple versions (seeds) of a tool around but having only one version *active* at a particular time. 
-* The STAGE_DIR is where the compiled resources for a recipe/seed live. This is separate and external to the installation directory.
-* The installation directory is configurable by defining @BB_INSTALL@ (see configuration below).
-** To be an active seed is to have the binaries of the particular seed of the recipe linked in the bin directory of bio.brew
-** This is achieved partly through the use of a *current* symbolic link for each recipe that points to the directory containing the active seed.
-* Installation of a recipe seed and activation of that seed are two separate steps in this version of bio.brew.
-** This allows some sort of testing to be performed before the current version (seed) of the tool is switched to the new version.
-* Required operations before/after installation and removal are called automatically, instead of having to call these functions inside individual recipes.
-* Some additional helper functions for installation and checking external dependencies.
-* Additional bio.brew commands:
-** *clean* - to remove bio.brew files related to a recipe/seed. Useful for initially developing a recipe to clean out failed installation attempts.
-** *activate* - as mentioned above, activation (moving the current pointer for a recipe to the newly installed seed) is a separate step from install.
-** *test* - stubbed functionality that could be used in the future to add testing for a recipe/seed before it is activated.
-** *fake* - If there is a dependency in a recipe, but you don't want to use bio.brew to install the dependency, use fake to have bio.brew think that it is installed. (Most useful for java dependencies).
-
-h2. Cavets 
-
-These changes were made because of the nature of the environment we wanted bio.brew to work in - and because we believe it is very useful to be able to keep older versions of these tools around as necessary. I feel these changes are an improvement, but there are some things not completely integrated from the original bio.brew:
-
-* Not all the recipes have been modified to use the new methodology. See bamtools.sh or cufflinks.sh for examples of recipes that do use the new setup and conventions.
-* The test script(s) has not been tested and will probably not work.
+Where @tool@ is your tool's name. 
 
 h2. Install
 
@@ -48,17 +19,7 @@ h3. Install with git
 
 git clone git://github.com/vlandham/bio.brew.git
 
-h3. Install without git
-
-Another potential (untested/unused) option is to use curl:
-
-<pre>
-$ # Download the master branch using curl
-$ # -L follow redirects; -s silent; -S show error message if fails; -f fail silently on server errors -k ssl issues
-$ curl -LksSf http://github.com/vlandham/bio.brew/tarball/master | tar xvz -C. --strip 1
-</pre>
-
-h2. Configuration
+h2. Installation Configuration
 
 h3. Minimum Configuration
 
@@ -187,6 +148,43 @@ h2. Testing
 *untested*
 
 At that point you can use ./bin/bb to list, install or remove recipes. You can also run the ``tests/do_all.sh`` script to install all the recipes. That may take some time (20 minutes in a fairly powerful machine with 8 cores and using bb -j8 install).
+
+h2. Justification
+
+Imagine you get access to a new linux box or HPC cluster. You want to start doing your analysis, coding, data-mining but you do not have your toolbox available. Yes, you can ask the sysadmins to install that for you. That may work. You may also install the tools yourself.
+
+BB (biobrew) helps you either way. With a simple oneliner you can have most of your tools ready to use.  BB is a tiny package manager based entirely in bash. It makes the extension of recipes (package definitions) very easy. 
+
+BB currently works in Linux enviroments (it should work just fine in other flavours of Unix). It only needs a typical Linux enviroment with gcc, curl (and potentially git). Besides classic and inseparable unix tools, bio.brew's focus is on bioinformatic tools and packages. 
+
+bio.brew has a similar feel to it as the "homebrew":https://github.com/mxcl/homebrew package manager for Mac OSX. The difference being that it is much more lean in terms of functionality and packages provided, it is written entirely in shell instead of a mixture of shell and ruby, it works on more than just Mac OSX, and its focus is only on core bioinformatic tools.
+
+Give it a try and make it better by improving the framework and adding more recipes.
+
+h2. Differences from Original bio.brew
+
+* The recipe seed name is a more fundamental part of the system architecture now. Recipes are defined by the combination of the recipe name as well as the seed name. In effect, the *recipe name* describes a *tool* and the *seed name* indicates a specific *version* of that tool.
+* The above architecture allows and encourages keeping multiple versions (seeds) of a tool around but having only one version *active* at a particular time. 
+* The STAGE_DIR is where the compiled resources for a recipe/seed live. This is separate and external to the installation directory.
+* The installation directory is configurable by defining @BB_INSTALL@ (see configuration below).
+** To be an active seed is to have the binaries of the particular seed of the recipe linked in the bin directory of bio.brew
+** This is achieved partly through the use of a *current* symbolic link for each recipe that points to the directory containing the active seed.
+* Installation of a recipe seed and activation of that seed are two separate steps in this version of bio.brew.
+** This allows some sort of testing to be performed before the current version (seed) of the tool is switched to the new version.
+* Required operations before/after installation and removal are called automatically, instead of having to call these functions inside individual recipes.
+* Some additional helper functions for installation and checking external dependencies.
+* Additional bio.brew commands:
+** *clean* - to remove bio.brew files related to a recipe/seed. Useful for initially developing a recipe to clean out failed installation attempts.
+** *activate* - as mentioned above, activation (moving the current pointer for a recipe to the newly installed seed) is a separate step from install.
+** *test* - stubbed functionality that could be used in the future to add testing for a recipe/seed before it is activated.
+** *fake* - If there is a dependency in a recipe, but you don't want to use bio.brew to install the dependency, use fake to have bio.brew think that it is installed. (Most useful for java dependencies).
+
+h2. Cavets 
+
+These changes were made because of the nature of the environment we wanted bio.brew to work in - and because we believe it is very useful to be able to keep older versions of these tools around as necessary. I feel these changes are an improvement, but there are some things not completely integrated from the original bio.brew:
+
+* Not all the recipes have been modified to use the new methodology. See bamtools.sh or cufflinks.sh for examples of recipes that do use the new setup and conventions.
+* The test script(s) has not been tested and will probably not work.
 
 h2. TODO
 

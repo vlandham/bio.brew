@@ -23,7 +23,7 @@ find_dist_path()
 }
 
 MAIN_DIR=$(find_dist_path ${BASH_SOURCE[0]})
-load_files=(common.sh install.sh list.sh remove.sh usage.sh activate.sh test.sh fake.sh clean.sh)
+load_files=(common.sh install.sh helpers.sh list.sh remove.sh usage.sh activate.sh test.sh fake.sh clean.sh)
 for f in ${load_files[@]}; do source $MAIN_DIR/lib/$f; done
 
 make_j=1

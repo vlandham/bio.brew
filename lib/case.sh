@@ -1,3 +1,10 @@
+#===============================================
+# case.sh
+# Should be sourced as final line for every recipe.
+# Provides functionality for bb actions (install, 
+# remove, etc).
+#   
+#===============================================
 case $bb_action in
   "install") 
     if [ $(check_if_installed $seed_name) == "0" ]

@@ -1,3 +1,10 @@
+#===============================================
+#    NAME: bb_install
+#    DESC: main entry point for recipe installation.
+#          sources recipe file.
+# PARAM 1: name of recipe to install
+#   
+#===============================================
 bb_install()
 {
   local recipe=$1
@@ -8,149 +15,16 @@ bb_install()
   source "$RECIPE_DIR/${recipe}.sh"
 }
 
-clear_env()
-{
-  rm -f $LOG_DIR/$recipe.env.sh
-}
-
-for_env()
-{
-  echo $1 >> $LOG_DIR/$recipe.env.sh
-}
-
-check_deps()
-{
-  local list_deps=("$@")
-  local not_installed=""
-  for f in ${list_deps[@]} 
-  do
-    local base_log=`dirname $LOG_DIR`
-    local install_flag="$base_log/$f/*.installed"
-    [ ! -f $install_flag ] && not_installed="$not_installed $f"
-  done
-  [ ".$not_installed" != "." ] && log "Install deps first:$not_installed" && exit 1
-  return 0 
-}
-
-check_external_deps()
-{
-  local list_external_deps=("$@")
-  local not_installed=""
-
-  for f in ${list_external_deps[@]}
-  do
-    log "Checking external dependency $f"
-    if [ $(check_if_external_installed $f) == "1" ]
-    then
-      not_installed="$not_installed $f"
-    fi
-  done
-
-  [ ".$not_installed" != "." ] && log "Install external packages first:$not_installed" && exit 1
-  return 0
-}
-
-check_if_external_installed()
-{
-  local package_name=$1
-  rtn=1
-
-  local apt_get=`which apt-get 2> /dev/null`
-  #if [ ".$apt_get" != "." ]
-  #then
-    # assume ubuntu / debian box
-  #fi
-
-  local rpm=`which rpm 2> /dev/null`
-  if [ ".$rpm" != "." ]
-  then
-    # assume redhat / centOS box
-    local package_found=`rpm -qi $package_name 2> /dev/null`
-    [[ $package_found != *not*installed* ]] && rtn=0 || rtn=1
-  fi
-
-  echo $rtn
-}
-
-check_if_installed()
-{
-  local install_seed_name=$1
-  #[ -d $TB_DIR/$recipe_name ] && echo 1 || echo 0
-  [ -f $LOG_DIR/$install_seed_name.installed ] && echo 1 || echo 0
-}
-
-check_any_installed()
-{
-  local recipe_name=$1
-  local installed=$(find_all_installed $recipe_name)
-  [ ".$installed" != "." ] && echo 1 || echo 0
-}
-
-find_all_installed()
-{
-  local recipe=$1
-  local log_dir=$(log_dir_for $recipe)
-
-  # now return array of seed names that are
-  # installed for this recipe
-  # This assumes that at least one seed in this
-  # recipe has been installed. Best to use
-  # check_any_installed before hand
-  local installed_pattern="*.installed"
-  if [ -d $log_dir ] 
-  then
-    local installed_seeds=`find $log_dir -name "$installed_pattern"`
-    for ins in $installed_seeds; do echo `basename $ins .installed`; done
-  fi
-}
-
-log_dir_for()
-{
-  local recipe_name=$1
-  # appends the recipe name
-  # to the log directory if
-  # that has not been done 
-  # already. Hack to try to
-  # avoid too much confusion with 
-  # having the recipe name as part of the
-  # log dir in most cases
-  local log_dir=$LOG_DIR
-  local log_base_name=`basename $log_dir`
-  if [ "$log_base_name" != "$recipe" ]
-  then
-    log_dir="$LOG_DIR/$recipe"
-  fi
-  echo $log_dir
-}
-
-before_install()
-{
-  local recipe_name=$1
-  mkdir -p $STAGE_DIR
-  mkdir -p $LOCAL_DIR
-  mkdir -p $TB_DIR
-  mkdir -p $LOG_DIR
-  mkdir -p $BIN_DIR
-  mkdir -p $ETC_DIR
-  mkdir -p $LIB_DIR
-  mkdir -p $MAN_DIR
-
-  [ -f $LOG_DIR/$recipe_name.lock ] && usage 1 "Other instance is working on $recipe_name. Bailing out."
-  touch $LOG_DIR/$recipe_name.lock
-}
-
-after_install()
-{
-  local recipe_name=$1
-  local lock_file="$LOG_DIR/$recipe_name.lock"
-  local install_flag="$LOG_DIR/$recipe_name.installed"
-  log "recipe [$recipe_name] installed."
-  log "removing lock. [$lock_file]"
-  rm -f $lock_file
-  log "touching install flag [$install_flag]"
-  touch $install_flag
-}
-
+#===============================================
+#    NAME: configure_tool
+#    DESC: Runs a tool's ./configure script.
+#          If no prefix is given, defaults
+#          To seed's stage dir
+# PARAM 1: seed name
+# PARAM 2: options to be passed to configure 
+# PARAM 3: prefix to use for configure --prefix
+#   
+#===============================================
 configure_tool()
 {
   local seed_name=$1
@@ -163,6 +37,16 @@ configure_tool()
   ./configure --prefix=$prefix $options &> $log_file
 }
 
+#===============================================
+#    NAME: make_tool
+#    DESC: Runs a tool's make script.
+#    NOTE: Exports a number of paths to
+#          attempt to ensure that the tool is 
+#          built and contained in the seed dir
+# PARAM 1: seed name
+# PARAM 2: make -j number to use
+#   
+#===============================================
 make_tool()
 {
   local seed_name=$1
@@ -171,12 +55,17 @@ make_tool()
   local log_file=$LOG_DIR/${seed_name}.make.log.txt
   log "running make on tool [logging output: $log_file] [j: $make_j]"
   (
-  export LIBRARY_PATH=$LOCAL_DIR/lib
-  export CPATH=$LOCAL_DIR/include
+  export LIBRARY_PATH=$LIB_DIR
+  export CPATH=$INCLUDE_DIR
   make -j $make_j &> $log_file
   )
 }
 
+#===============================================
+#    NAME: install_tool
+#    DESC: Runs a tool's make install script.
+#   
+#===============================================
 install_tool()
 {
   local log_file=$LOG_DIR/${seed_name}.install.log.txt
@@ -184,6 +73,14 @@ install_tool()
   make install &> $log_file
 }
 
+#===============================================
+#    NAME: download
+#    DESC: Helper function for downloading a
+#          a url with curl
+# PARAM 1: url of file to download
+# PARAM 2: location to download it to
+#   
+#===============================================
 download()
 {
   local url=$1
@@ -197,6 +94,14 @@ download()
   fi 
 }
 
+#===============================================
+#    NAME: download_git
+#    DESC: Helper function for downloading a
+#          a url with git clone
+# PARAM 1: url of file to download
+# PARAM 2: location to download it to
+#   
+#===============================================
 download_git()
 {
   local url=$1
@@ -206,6 +111,15 @@ download_git()
   git clone $url $download_file &> $log_file
 }
 
+#===============================================
+#    NAME: decompress_tool
+#    DESC: Helper function un-compressing a number
+#          of different archive formats. Currently
+#          can handle: tar.gz, tar.bz2, tgz, zip
+# PARAM 1: archive file to decompress
+# PARAM 2: file type of archive file
+#   
+#===============================================
 decompress_tool()
 {
   local tb_file=$1
@@ -229,6 +143,239 @@ decompress_tool()
     ;;
   esac
 }
+
+#===============================================
+#    NAME: clear_env
+#    DESC: removes recipe's env file. The env file
+#          is sourced by bb_load_env to provide
+#          recipe specific environment vars
+#  GLOBAL: $recipe. Set in bb_install
+#   
+#===============================================
+clear_env()
+{
+  rm -f $LOG_DIR/$recipe.env.sh
+}
+
+#===============================================
+#    NAME: for_env
+#    DESC: adds content to env file. The env file
+#          is sourced by bb_load_env to provide
+#          recipe specific environment vars
+# PARAM 1: content to put into recipes env file
+#  GLOBAL: $recipe. Set in bb_install
+#   
+#===============================================
+for_env()
+{
+  echo $1 >> $LOG_DIR/$recipe.env.sh
+}
+
+#===============================================
+#    NAME: check_deps
+#    DESC: ensures that all dependencies listed
+#          in the $deps variable are installed.
+#          Called by lib/case.sh.
+# PARAM 1: deps array. 
+#   
+#===============================================
+check_deps()
+{
+  local list_deps=("$@")
+  local not_installed=""
+  for f in ${list_deps[@]} 
+  do
+    local base_log=`dirname $LOG_DIR`
+    local install_flag="$base_log/$f/*.installed"
+    [ ! -f $install_flag ] && not_installed="$not_installed $f"
+  done
+  [ ".$not_installed" != "." ] && log "Install deps first:$not_installed" && exit 1
+  return 0 
+}
+
+#===============================================
+#    NAME: check_external_deps
+#    DESC: ensures that all external dependencies listed
+#          in the $external_deps variable are installed.
+#          Called by lib/case.sh.
+# PARAM 1: external_deps array. 
+#   
+#===============================================
+check_external_deps()
+{
+  local list_external_deps=("$@")
+  local not_installed=""
+
+  for f in ${list_external_deps[@]}
+  do
+    log "Checking external dependency $f"
+    if [ $(check_if_external_installed $f) == "1" ]
+    then
+      not_installed="$not_installed $f"
+    fi
+  done
+
+  [ ".$not_installed" != "." ] && log "Install external packages first:$not_installed" && exit 1
+  return 0
+}
+
+#===============================================
+#    NAME: check_if_external_installed
+#    DESC: attempts to determine if package is
+#          installed external to bb.
+#          Currently uses rpm to try to find packages.
+# PARAM 1: package name
+#   
+#===============================================
+check_if_external_installed()
+{
+  local package_name=$1
+  rtn=1
+
+  local apt_get=`which apt-get 2> /dev/null`
+  #if [ ".$apt_get" != "." ]
+  #then
+    # assume ubuntu / debian box
+  #fi
+
+  local rpm=`which rpm 2> /dev/null`
+  if [ ".$rpm" != "." ]
+  then
+    # assume redhat / centOS box
+    local package_found=`rpm -qi $package_name 2> /dev/null`
+    [[ $package_found != *not*installed* ]] && rtn=0 || rtn=1
+  fi
+
+  echo $rtn
+}
+
+#===============================================
+#    NAME: check_if_installed
+#    DESC: checks if bb recipe has been installed
+# PARAM 1: recipe name
+#   
+#===============================================
+check_if_installed()
+{
+  local install_seed_name=$1
+  [ -f $LOG_DIR/$install_seed_name.installed ] && echo 1 || echo 0
+}
+
+#===============================================
+#    NAME: check_any_installed
+#    DESC: returns 1 if a recipe has at least one
+#          version installed. 
+#          Called by lib/list.sh
+# PARAM 1: recipe name
+#   
+#===============================================
+check_any_installed()
+{
+  local recipe_name=$1
+  local installed=$(find_all_installed $recipe_name)
+  [ ".$installed" != "." ] && echo 1 || echo 0
+}
+
+#===============================================
+#    NAME: find_all_installed
+#    DESC: returns array of seed name and version
+#          of all versions of a recipe installed.
+#    NOTE: Expects that at least one version of 
+#          recipe is installed. Use check_any_installed
+#          prior to calling this function
+# PARAM 1: recipe name
+#   
+#===============================================
+find_all_installed()
+{
+  local recipe=$1
+  local log_dir=$(log_dir_for $recipe)
+
+  # now return array of seed names that are
+  # installed for this recipe
+  # This assumes that at least one seed in this
+  # recipe has been installed. Best to use
+  # check_any_installed before hand
+  local installed_pattern="*.installed"
+  if [ -d $log_dir ] 
+  then
+    local installed_seeds=`find $log_dir -name "$installed_pattern"`
+    for ins in $installed_seeds; do echo `basename $ins .installed`; done
+  fi
+}
+
+#===============================================
+#    NAME: log_dir_for
+#    DESC: returns path for recipe's log dir
+# PARAM 1: recipe name
+#   
+#===============================================
+log_dir_for()
+{
+  local recipe_name=$1
+  # appends the recipe name
+  # to the log directory if
+  # that has not been done 
+  # already. Hack to try to
+  # avoid too much confusion with 
+  # having the recipe name as part of the
+  # log dir in most cases
+  local log_dir=$LOG_DIR
+  local log_base_name=`basename $log_dir`
+  if [ "$log_base_name" != "$recipe" ]
+  then
+    log_dir="$LOG_DIR/$recipe"
+  fi
+  echo $log_dir
+}
+
+#===============================================
+#    NAME: before_install
+#    DESC: performs prerequiste functionality before
+#          do_install is called.
+#          Called by lib/case.sh
+# PARAM 1: recipe name
+#   
+#===============================================
+before_install()
+{
+  local recipe_name=$1
+  mkdir -p $STAGE_DIR
+  mkdir -p $LOCAL_DIR
+  mkdir -p $TB_DIR
+  mkdir -p $LOG_DIR
+  mkdir -p $BIN_DIR
+  mkdir -p $ETC_DIR
+  mkdir -p $LIB_DIR
+  mkdir -p $MAN_DIR
+
+  [ -f $LOG_DIR/$recipe_name.lock ] && usage 1 "Other instance is working on $recipe_name. Bailing out."
+  touch $LOG_DIR/$recipe_name.lock
+}
+
+#===============================================
+#    NAME: after_install
+#    DESC: performs post functionality after
+#          do_install is called.
+#          Called by lib/case.sh
+# PARAM 1: recipe name
+#   
+#===============================================
+after_install()
+{
+  local recipe_name=$1
+  local lock_file="$LOG_DIR/$recipe_name.lock"
+  local install_flag="$LOG_DIR/$recipe_name.installed"
+  log "recipe [$recipe_name] installed."
+  log "removing lock. [$lock_file]"
+  rm -f $lock_file
+  log "touching install flag [$install_flag]"
+  touch $install_flag
+}
+
+#===============================================
+#   WARNING: Untested perl helpers below
+#===============================================
 
 cpan_remove()
 {

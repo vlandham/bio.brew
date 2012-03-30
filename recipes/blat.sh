@@ -1,8 +1,9 @@
 local version="34"
 local type="zip"
-local URL="http://hgwdev.cse.ucsc.edu/~kent/src/blatSrc${version}.${type}"
+local tool_name="blatSrc"
+local URL="http://hgwdev.cse.ucsc.edu/~kent/src/${tool_name}${version}.${type}"
 local tb_file=`basename $URL`
-local seed_name="blatSrc"
+local seed_name="blat-${version}"
 local install_files=(bin/blat bin/pslPretty bin/pslReps bin/pslSort)
 
 do_install()
@@ -10,8 +11,10 @@ do_install()
   cd $TB_DIR
   download $URL $tb_file
   decompress_tool $tb_file $type
+  mv $tool_name $seed_name
   cd $seed_name
   export MACHTYPE="x86_64"
+  # we will move this directory out of $HOME below
   mkdir -p $HOME/bin/$MACHTYPE
   make &> $LOG_DIR/${seed_name}.make.log.txt
   cd ..

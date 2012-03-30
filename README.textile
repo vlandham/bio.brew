@@ -11,6 +11,8 @@ bb install tool
 
 Where @tool@ is your tool's name. 
 
+Have a feature request? Want a new recipe? "Create an Issue":https://github.com/vlandham/bio.brew/issues to let us know what you want.
+
 h2. Creating a Recipe
 
 See "bio.brew's example recipe":https://github.com/vlandham/bio.brew/blob/master/recipes/example.sh to get a feel for how a recipe should look. 
@@ -109,6 +111,44 @@ $ java -Xmx2g -jar $PICARD/BamToBfq.jar [options]
 </pre>
 
 Its just that easy!
+
+h3. Installation Troubles
+
+So you write a recipe, you forget some step, and now things are messed up. What do you do?
+
+Recipe creation is an iterative process. Usually you won't get it completely right the first time. In the future, we hope to make @bio.brew@ more accommodating to this process. For now, there are a few things you can do.
+
+h4. Run bb clean <tool>
+
+If @bio.brew@ dies during one of its steps, it could leave behind lock files that might prevent running the installation process again.
+
+To get rid of these, run @bb clean@ like so:
+
+<pre>
+bb clean picard
+</pre>
+
+This will remove the meta files @bio.brew@ creates, allowing you to re-run the recipe (after you've fixed the problem).
+
+h4. Check the log files
+
+To see what when wrong, check the installation log files. These should be in the @$BB_PATH/logs@ directory. Built-in helpers usually generate log files for their processes.
+
+h4. Add logging to your recipe
+
+@bio.brew@ comes with a handy @log@ helper, which you can use to echo out relevant information during the installation of your recipe
+
+<pre>
+log "performing some command now"
+# ...
+log "done with command"
+</pre>
+
+h4. Manually remove files
+
+If something goes really wrong, you might have to dig down and remove files manually to start over again.
+
+Remember: recipes are just bash scripts. There are no inherent restrictions on what you put in them. Please recipe responsibly. 
 
 h2. How I Use bio.brew
 

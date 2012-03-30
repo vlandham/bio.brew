@@ -20,7 +20,9 @@ do_install()
 
 do_activate()
 {
+  cd $STAGE_DIR/$seed_name
   install_tool $seed_name
+  link_library $seed_name
   # link_from_stage $seed_name ${install_files[@]}
 }
 

@@ -53,7 +53,7 @@ check_external_deps()
   for f in ${list_external_deps[@]}
   do
     log "Checking external dependency $f"
-    if [ $(check_if_external_installed $f) == "1" ]
+    if [ $(check_if_external_installed $f) == "0" ]
     then
       not_installed="$not_installed $f"
     fi
@@ -67,29 +67,32 @@ check_external_deps()
 #    NAME: check_if_external_installed
 #    DESC: attempts to determine if package is
 #          installed external to bb.
-#          Currently uses rpm to try to find packages.
+#          Returns 1 if tool is installed, else 0.
+#          Uses simple 'which <tool>' to determine
+#          if installed.
 # PARAM 1: package name
 #   
 #===============================================
 check_if_external_installed()
 {
-  local package_name=$1
-  rtn=1
+  local program=$1
+  local rtn=0 
 
-  local apt_get=`which apt-get 2> /dev/null`
-  #if [ ".$apt_get" != "." ]
-  #then
-    # assume ubuntu / debian box
-  #fi
+  local program_found=`which ${program} 2> /dev/null`
 
-  local rpm=`which rpm 2> /dev/null`
-  if [ ".$rpm" != "." ]
+  if [ ".$program_found" != "."  ]
   then
-    # assume redhat / centOS box
-    local package_found=`rpm -qi $package_name 2> /dev/null`
-    [[ $package_found != *not*installed* ]] && rtn=0 || rtn=1
+    local program_base_check=`basename ${program_found}`
+    if [ "$program_base_check" == "$program" ]
+    then
+      rtn=1
+    fi
+  else
+    rtn=0
   fi
-
+  
+  # 1 if installed
+  # 0 if not installed
   echo $rtn
 }
 

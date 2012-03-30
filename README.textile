@@ -112,7 +112,7 @@ $ java -Xmx2g -jar $PICARD/BamToBfq.jar [options]
 
 Its just that easy!
 
-h3. Installation Troubles
+h2. Recipe Troubles
 
 So you write a recipe, you forget some step, and now things are messed up. What do you do?
 

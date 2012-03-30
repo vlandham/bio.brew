@@ -1,20 +1,26 @@
 
-local URL="http://www.skamphausen.de/downloads/cdargs/cdargs-1.35.tar.gz"
-local tb_file=`basename $URL`
+local version="1.35"
 local type="tar.gz"
-local seed_name=$(extract_tool_name $tb_file $type)
-local install_files=(bin/cdargs)
+local URL="http://www.skamphausen.de/downloads/cdargs/cdargs-${version}.${type}"
+local tb_file=`basename $URL`
+local seed_name="cdargs-${version}"
+local install_files=(bin/cdargs contrib/cdargs-bash.sh)
 
 do_install()
 {
   cd $TB_DIR
   download $URL $tb_file
   decompress_tool $tb_file $type
-  cd $seed_name
+  mv $seed_name $STAGE_DIR
+  cd $STAGE_DIR/$seed_name
   configure_tool $seed_name
   make_tool $seed_name
   install_tool $seed_name
-  cp contrib/cdargs-bash.sh $LOCAL_DIR/bin
+  link_from_stage $seed_name ${install_files[@]}
+}
+
+do_activate()
+{
   link_from_stage $seed_name ${install_files[@]}
 }
 

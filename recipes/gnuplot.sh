@@ -10,11 +10,11 @@ do_install()
   cd $TB_DIR
   download $URL $tb_file
   decompress_tool $tb_file $type
-  cd $seed_name
+  mv $seed_name $STAGE_DIR
+  cd $STAGE_DIR/$seed_name
   configure_tool $seed_name
   make_tool $seed_name $make_j
   install_tool $seed_name
-  rm -rf $TB_DIR/$seed_name
 }
 
 do_activate()

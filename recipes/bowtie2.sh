@@ -12,7 +12,6 @@ do_install()
   decompress_tool $tb_file $type
   mv $TB_DIR/$seed_name $STAGE_DIR/$seed_name
   cd $STAGE_DIR/$seed_name
-  cp -r $STAGE_DIR/$seed_name ../bowtie2
 }
 
 do_activate()

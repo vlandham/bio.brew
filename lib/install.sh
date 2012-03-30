@@ -146,7 +146,7 @@ find_all_installed()
   local installed_pattern="*.installed"
   if [ -d $log_dir ] 
   then
-    local installed_seeds=`find $log_dir -name "$installed_pattern"`
+    local installed_seeds=`find $log_dir -name "$installed_pattern" | sort -r`
     for ins in $installed_seeds; do echo `basename $ins .installed`; done
   fi
 }

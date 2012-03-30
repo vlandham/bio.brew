@@ -14,6 +14,8 @@ configure_tool()
   local options=$2
   local prefix=$3
   local log_file="$LOG_DIR/${seed_name}.configure.log.txt"
+  export LIBRARY_PATH=$LIB_DIR:$LIBRARY_PATH
+  export CPATH=$INCLUDE_DIR:$CPATH
 
   [ ".$prefix" ==  "." ] && prefix=$STAGE_DIR/$seed_name
   log "running configure [logging output: $log_file]"
@@ -38,8 +40,8 @@ make_tool()
   local log_file=$LOG_DIR/${seed_name}.make.log.txt
   log "running make on tool [logging output: $log_file] [j: $make_j]"
   (
-  export LIBRARY_PATH=$LIB_DIR
-  export CPATH=$INCLUDE_DIR
+  export LIBRARY_PATH=$LIB_DIR:$LIBRARY_PATH
+  export CPATH=$INCLUDE_DIR:$CPATH
   make -j $make_j &> $log_file
   )
 }

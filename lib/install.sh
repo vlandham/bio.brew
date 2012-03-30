@@ -160,6 +160,8 @@ find_all_installed()
 log_dir_for()
 {
   local recipe_name=$1
+  # TODO: See hack in bin/bb
+  #
   # appends the recipe name
   # to the log directory if
   # that has not been done 

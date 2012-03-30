@@ -161,10 +161,25 @@ link_from_stage()
   do
     local bn=`basename $f`
     log "linking from staging area [$f]"
-    rm -f $LOCAL_DIR/bin/$bn
-    ln -s $STAGE_DIR/current/$f $LOCAL_DIR/bin/$bn
+    rm -f $BIN_DIR/$bn
+    ln -s $STAGE_DIR/current/$f $BIN_DIR/$bn
     log "Setting permission"
     [ -f $STAGE_DIR/$seed_name/$f ] && chmod 755 $STAGE_DIR/$seed_name/$f
+  done
+  return 0
+}
+
+link_library()
+{
+  local seed_name=$1; shift
+
+  switch_current $seed_name
+  for f in `ls $STAGE_DIR/current/lib/*`
+  do
+    local bn=`basename $f`
+    log "linking from lib [$f]"
+    rm -f $LIB_DIR/$bn
+    ln -s $STAGE_DIR/current/lib/$f $LIB_DIR/$bn
   done
   return 0
 }

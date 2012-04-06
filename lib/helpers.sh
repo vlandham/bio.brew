@@ -169,21 +169,77 @@ link_from_stage()
   return 0
 }
 
+#===============================================
+#    NAME: link_library
+#    DESC: Helper function to link library files
+# PARAM 1: seed name
+# PARAM 2: lib dir - defaults to 'lib'
+#===============================================
 link_library()
 {
-  local seed_name=$1; shift
+  local seed_name=$1
+  local lib_dir=$2
+
+  [ ".$lib_dir" ==  "." ] && lib_dir='lib'
 
   switch_current $seed_name
-  for f in `ls $STAGE_DIR/current/lib/*`
+  for f in `ls $STAGE_DIR/current/${lib_dir}/*`
   do
     local bn=`basename $f`
     log "linking from lib [$f]"
     rm -f $LIB_DIR/$bn
-    ln -s $STAGE_DIR/current/lib/$f $LIB_DIR/$bn
+    ln -s $STAGE_DIR/current/${lib_dir}/$f $LIB_DIR/$bn
   done
   return 0
 }
 
+#===============================================
+#    NAME: link_include
+#    DESC: Helper function to link library files
+# PARAM 1: seed name
+# PARAM 2: include dir - defaults to 'include'
+#===============================================
+link_include()
+{
+  local seed_name=$1
+  local include_dir=$2
+
+  [ ".$include_dir" ==  "." ] && include_dir='include'
+
+  switch_current $seed_name
+  for f in `ls $STAGE_DIR/current/${include_dir}/*`
+  do
+    local bn=`basename $f`
+    log "linking from include [$f]"
+    rm -f $INCLUDE_DIR/$bn
+    ln -s $STAGE_DIR/current/${include_dir}/$f $INCLUDE_DIR/$bn
+  done
+  return 0
+}
+
+#===============================================
+#    NAME: link_share
+#    DESC: Helper function to link library files
+# PARAM 1: seed name
+# PARAM 2: share dir - defaults to 'share'
+#===============================================
+link_share()
+{
+  local seed_name=$1
+  local share_dir=$2
+
+  [ ".$share_dir" ==  "." ] && share_dir='share'
+
+  switch_current $seed_name
+  for f in `ls $STAGE_DIR/current/${share_dir}/*`
+  do
+    local bn=`basename $f`
+    log "linking from lib [$f]"
+    rm -f $SHARE_DIR/$bn
+    ln -s $STAGE_DIR/current/${share_dir}/$f $SHARE_DIR/$bn
+  done
+  return 0
+}
 
 #===============================================
 #    NAME: clear_env

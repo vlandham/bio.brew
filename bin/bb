@@ -23,7 +23,7 @@ find_dist_path()
 }
 
 MAIN_DIR=$(find_dist_path ${BASH_SOURCE[0]})
-load_files=(common.sh install.sh list.sh remove.sh usage.sh activate.sh test.sh fake.sh clean.sh)
+load_files=(common.sh install.sh helpers.sh list.sh remove.sh usage.sh activate.sh test.sh fake.sh clean.sh)
 for f in ${load_files[@]}; do source $MAIN_DIR/lib/$f; done
 
 make_j=1
@@ -51,6 +51,9 @@ shift $(($OPTIND - 1))
 action=$1
 recipe=$2
 
+# TODO: This hack is fragile. Would be 
+#  great to make it a bit more robust
+#
 # This allows us to use the seed_name
 # as a particular version and
 # have multiple versions of these
@@ -61,7 +64,13 @@ STAGE_DIR="$STAGE_DIR/$recipe"
 
 case $action in
   "list")
-    bb_list
+    # TODO: See above hack. Need to reset LOG_DIR for list
+    # to be able to pass in sub commands. fixme
+    if [ ".$2" != "." ]
+    then
+      LOG_DIR=`dirname $LOG_DIR`
+    fi
+    bb_list $2
     ;;
   "install")
     [ ".$recipe" == "." ] && usage 1 "I need a recipe."

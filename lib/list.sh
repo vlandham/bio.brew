@@ -1,5 +1,6 @@
 bb_list()
 {
+  local sub_command=$1
   n_recipes=`ls $RECIPE_DIR/ | wc -l`
 
   if [ $n_recipes != "0" ]
@@ -27,7 +28,10 @@ bb_list()
           printf "%s : %-24.24s : %s\n" "$installed" "$installed_seed" "$s_deps"
         done
       else
-        printf "%s : %-24.24s : %s\n" "$installed" "$seed_name" "$s_deps"
+        if [ "$sub_command" != "installed" ]
+        then
+          printf "%s : %-24.24s : %s\n" "$installed" "$seed_name" "$s_deps"
+        fi
       fi
       deps=""
     done

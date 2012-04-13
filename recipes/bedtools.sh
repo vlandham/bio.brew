@@ -21,7 +21,6 @@ do_install()
   make_tool $seed_name $make_j
   cd ..
   mv $seed_name $STAGE_DIR
-  cp -r $STAGE_DIR/$seed_name ../BEDtools
 }
 
 do_activate()

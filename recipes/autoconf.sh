@@ -1,7 +1,8 @@
-local URL="http://ftp.gnu.org/gnu/autoconf/autoconf-latest.tar.gz"
-local tb_file=`basename $URL`
+local version="2.68"
 local type="tar.gz"
-local seed_name="autoconf-2.68"
+local URL="http://ftp.gnu.org/gnu/autoconf/autoconf-${version}.${type}"
+local tb_file=`basename $URL`
+local seed_name="autoconf-${version}"
 local install_files=(bin/autoupdate bin/autoscan bin/ifnames bin/autoreconf bin/autoheader bin/autoconf bin/autom4te)
 
 do_install()
@@ -12,6 +13,14 @@ do_install()
   cd $seed_name
   configure_tool $seed_name
   make_tool $seed_name $make_j
+  cd ..
+  mv $seed_name $STAGE_DIR
+}
+
+do_activate()
+{
+  cd $STAGE_DIR
+  cd $seed_name
   install_tool $seed_name
   link_from_stage $seed_name ${install_files[@]}
 }

@@ -30,34 +30,6 @@ check_if_active()
   [ -f $LOG_DIR/$active_seed_name.active ] && echo 1 || echo 0
 }
 
-switch_current()
-{
-  local seed_name=$1; shift
-
-  #first ensure the current link is present
-  # and pointing to the current seed_name dir
-  rm -f $STAGE_DIR/current
-  ln -s $STAGE_DIR/$seed_name $STAGE_DIR/current
-}
-
-link_from_stage()
-{
-  local seed_name=$1; shift
-  local install_files=("$@")
-
-  switch_current $seed_name
-
-  for f in ${install_files[@]} 
-  do
-    local bn=`basename $f`
-    log "linking from staging area [$f]"
-    rm -f $LOCAL_DIR/bin/$bn
-    ln -s $STAGE_DIR/current/$f $LOCAL_DIR/bin/$bn
-    log "Setting permission"
-    [ -f $STAGE_DIR/$seed_name/$f ] && chmod 755 $STAGE_DIR/$seed_name/$f
-  done
-  return 0
-}
 
 deactivate_recipe()
 {

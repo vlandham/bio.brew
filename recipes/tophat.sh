@@ -19,7 +19,6 @@ do_install()
   decompress_tool $tb_file $type
   mv $tb_dir $seed_name
   mv $seed_name $STAGE_DIR
-  cp -r $STAGE_DIR/$seed_name ../tophat
 }
 
 do_activate()

@@ -1,5 +1,5 @@
 
-local version="1.62"
+local version="1.65"
 local type="zip"
 local tb_file="picard-tools-${version}.${type}"
 local URL="http://sourceforge.net/projects/picard/files/picard-tools/${version}/${tb_file}"
@@ -15,7 +15,6 @@ do_install()
   decompress_tool $tb_file $type
   mv $tb_dir $seed_name
   mv $seed_name $STAGE_DIR
-  cp -r $STAGE_DIR/$seed_name ../picard
 }
 
 do_activate()

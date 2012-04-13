@@ -1,25 +1,29 @@
 
-local URL="http://sourceforge.net/projects/tmux/files/tmux/tmux-1.4/tmux-1.4.tar.gz/download"
-local tb_file="tmux-1.4.tar.gz"
+local version="1.6"
 local type="tar.gz"
-local seed_name=$(extract_tool_name $tb_file $type)
-#local install_files=(bin/dargs contrib/cdargs-bash.sh)
-local deps=("libevent-1.4.14b-stable")
+local URL="http://softlayer.dl.sourceforge.net/project/tmux/tmux/tmux-${version}/tmux-${version}.${type}"
+local tb_file=`basename $URL`
+local seed_name="tmux-${version}"
+local install_files=(tmux)
+local deps=("libevent")
 
 do_install()
 {
   cd $TB_DIR
   download $URL $tb_file
-  [ -f "download" ] && mv "download" $tb_file
   decompress_tool $tb_file $type
-  cd $seed_name
-  export LIBRARY_PATH=$LOCAL_LIB/lib:$LIBRARY_PATH
-  export CPATH=$LOCAL_LIB/include:$CPATH
+  mv $seed_name $STAGE_DIR
+  cd $STAGE_DIR/$seed_name
   configure_tool $seed_name
   make_tool $seed_name
-  ln -s $TB_DIR/$seed_name/tmux $LOCAL_DIR/bin
+}
+
+do_activate()
+{
   log "NOTE: make sure to setup LD_LIBRARY_PATH to point to the bb dist/lib"
-  #export LD_LIBRARY_PATH
+  log "done automatically with bb_load_env"
+  for_env "export LD_LIBRARY_PATH='$LIB_DIR':$LD_LIBRARY_PATH"
+  link_from_stage $seed_name ${install_files[@]}
 }
 
 do_remove()

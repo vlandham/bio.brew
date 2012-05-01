@@ -183,12 +183,35 @@ link_library()
   [ ".$lib_dir" ==  "." ] && lib_dir='lib'
 
   switch_current $seed_name
-  for f in `ls $STAGE_DIR/current/${lib_dir}/*`
+  for f in `ls $STAGE_DIR/current/${lib_dir}`
   do
     local bn=`basename $f`
     log "linking from lib [$f]"
     rm -f $LIB_DIR/$bn
     ln -s $STAGE_DIR/current/${lib_dir}/$f $LIB_DIR/$bn
+  done
+  return 0
+}
+
+#===============================================
+#    NAME: unlink_library
+#    DESC: Helper function to remove library files
+# PARAM 1: seed name
+# PARAM 2: lib dir - defaults to 'lib'
+#===============================================
+unlink_library()
+{
+  local seed_name=$1
+  local lib_dir=$2
+
+  [ ".$lib_dir" ==  "." ] && lib_dir='lib'
+
+  switch_current $seed_name
+  for f in `ls $STAGE_DIR/current/${lib_dir}/*`
+  do
+    local bn=`basename $f`
+    log "removing from ${lib_dir} [$f]"
+    rm -f $LIB_DIR/$bn
   done
   return 0
 }
@@ -237,6 +260,30 @@ link_share()
     log "linking from lib [$f]"
     rm -f $SHARE_DIR/$bn
     ln -s $STAGE_DIR/current/${share_dir}/$f $SHARE_DIR/$bn
+  done
+  return 0
+}
+
+#===============================================
+#    NAME: link_man
+#    DESC: Helper function to link man files
+# PARAM 1: seed name
+# PARAM 2: share dir - defaults to 'man'
+#===============================================
+link_man()
+{
+  local seed_name=$1
+  local man_dir=$2
+
+  [ ".$man_dir" ==  "." ] && man_dir='man'
+
+  switch_current $seed_name
+  for f in `ls $STAGE_DIR/current/${man}/*`
+  do
+    local bn=`basename $f`
+    log "linking from lib [$f]"
+    rm -f $MAN_DIR/$bn
+    ln -s $STAGE_DIR/current/${man_dir}/$f $MAN_DIR/$bn
   done
   return 0
 }

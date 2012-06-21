@@ -236,17 +236,28 @@ link_files_in_dir()
   local dir_to_name=$3
   [ ".$dir_to_name" ==  "." ] && dir_to_name=$dir_name
 
+  # first unlink all current files related to this
+  #  seed_name
   unlink_files $seed_name $dir_name
 
+  # old_root is the full path to the root directory of
+  #  dir_name inside of the seed's stage directory.
   local old_root="$STAGE_DIR/$seed_name/${dir_name}"
+
+  # new_root is where the files will be simlinked to
   local new_root="$LOCAL_DIR/${dir_to_name}"
 
   switch_current $seed_name
 
+  # loop through all files in old_root
   for f in `find $old_root -type f`
   do
+
+    # regex replacement. replaces old_root with new_root
     local new_file_path=${f//$old_root/$new_root}
     log "linking $f to $new_file_path"
+
+    # make directory if necessary
     mkdir -p `dirname ${new_file_path}`
     ln -s $f $new_file_path
   done
@@ -267,12 +278,26 @@ unlink_files()
   local dir_name=$2
   log "unlinking files from $seed_name in $dir_name"
 
+  # full_active_dir is the directory we are
+  #  searching in to find files to remove
   local full_active_dir="$LOCAL_DIR/${dir_name}"
+
+  # full_search_dir is the directory that we
+  #  are searching for sym links into. If
+  #  a sym link inside full_active_dir includes
+  #  full_search_dir in its path, it will be
+  #  removed.
   local full_search_dir="$STAGE_DIR/$seed_name"
 
   for f in `find -P $full_active_dir`
   do
+    # readlink gives symlink path for a file
+    # ref: http://stackoverflow.com/questions/130329/how-do-you-get-what-a-symbolic-link-points-to-without-grep
     local sym_link_path=`readlink $f`
+
+    # alternative to using regex inside bash.
+    # could be done another way
+    # ref: http://www.unix.com/unix-dummies-questions-answers/43073-regex-if-then-else-statement-match-strings.html
     if echo $sym_link_path | grep "$full_search_dir"
     then
       log "removing $f from $dir_name"

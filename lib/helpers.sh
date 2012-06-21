@@ -181,7 +181,7 @@ link_library()
 {
   local seed_name=$1
   local lib_dir='lib'
-  link_files_in_dir $seed_name $lib_dir
+  link_files $seed_name $lib_dir
 }
 
 #===============================================
@@ -193,7 +193,7 @@ link_include()
 {
   local seed_name=$1
   local include_dir='include'
-  link_files_in_dir $seed_name $include_dir
+  link_files $seed_name $include_dir
 }
 
 #===============================================
@@ -205,7 +205,7 @@ link_share()
 {
   local seed_name=$1
   local share_dir='share'
-  link_files_in_dir $seed_name $share_dir
+  link_files $seed_name $share_dir
 }
 
 #===============================================
@@ -217,11 +217,11 @@ link_man()
 {
   local seed_name=$1
   local man_dir='man'
-  link_files_in_dir $seed_name $man_dir
+  link_files $seed_name $man_dir
 }
 
 #===============================================
-#    NAME: link_files_in_dir
+#    NAME: link_files
 #    DESC: Helper function to link files in a 
 #          given directory.
 # PARAM 1: seed name
@@ -229,7 +229,7 @@ link_man()
 # PARAM 3: dir_to  - directory to link files to.
 #          Defaults to dir_from.
 #===============================================
-link_files_in_dir()
+link_files()
 {
   local seed_name=$1
   local dir_name=$2

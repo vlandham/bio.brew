@@ -7,7 +7,7 @@ local tb_file=`basename $URL`
 
 # note the '.' in the basename call below
 local tb_dir=`basename $URL .$type`
-local deps=()
+local deps=(bowtie)
 local external_deps=()
 local install_files=(bismark bismark_genome_preparation methylation_extractor)
 

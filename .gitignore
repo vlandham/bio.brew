@@ -3,3 +3,4 @@ logs
 tarballs
 stage
 **/*.swp
+**/.dir_bash_history

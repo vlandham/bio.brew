@@ -16,7 +16,7 @@ do_install()
 do_activate()
 {
   for_env "export RBENV_ROOT='$STAGE_DIR/$seed_name'"
-  for_env "export PATH='\$RBENV_ROOT/shims:\$RBENV_ROOT/bin:\$PATH'"
+  for_env "export PATH=\"\$RBENV_ROOT/shims:\$RBENV_ROOT/bin:\$PATH\""
 }
 
 do_test()

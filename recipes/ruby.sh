@@ -1,4 +1,5 @@
 local version="1.9.3-p125"
+local seed_name="ruby-${version}"
 local deps=(rbenv)
 
 do_install()

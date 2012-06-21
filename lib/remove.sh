@@ -21,8 +21,10 @@ remove_recipe()
   rm -rf $TB_DIR/$recipe_name
   log "removing: $STAGE_DIR/$recipe_name"
   rm -rf $STAGE_DIR/$recipe_name
+  log "removing: $LOG_DIR/$recipe.env.sh"
+  rm -rf "$LOG_DIR/$recipe.env.sh"
   log "removing current link."
-  log "reset current link for this recipe to previous seed manually"
+  log "NOTE: reset current link for this recipe to previous seed manually"
   rm -rf $STAGE_DIR/current
 }
 

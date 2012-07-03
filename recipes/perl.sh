@@ -4,7 +4,7 @@ local deps=(perlbrew)
 
 do_install()
 {
-  perlbrew install $seed_name
+  perlbrew --force install $seed_name
 }
 
 do_activate()

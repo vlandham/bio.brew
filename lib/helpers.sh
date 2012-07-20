@@ -120,6 +120,9 @@ decompress_tool()
     "tgz")
       tar zxf $tb_file
     ;;
+    "tar")
+      tar xf $tb_file
+    ;;
     "zip")
       unzip $tb_file
     ;;
@@ -173,70 +176,133 @@ link_from_stage()
 #    NAME: link_library
 #    DESC: Helper function to link library files
 # PARAM 1: seed name
-# PARAM 2: lib dir - defaults to 'lib'
 #===============================================
 link_library()
 {
   local seed_name=$1
-  local lib_dir=$2
-
-  [ ".$lib_dir" ==  "." ] && lib_dir='lib'
-
-  switch_current $seed_name
-  for f in `ls $STAGE_DIR/current/${lib_dir}/*`
-  do
-    local bn=`basename $f`
-    log "linking from lib [$f]"
-    rm -f $LIB_DIR/$bn
-    ln -s $STAGE_DIR/current/${lib_dir}/$f $LIB_DIR/$bn
-  done
-  return 0
+  local lib_dir='lib'
+  link_files $seed_name $lib_dir
 }
 
 #===============================================
 #    NAME: link_include
-#    DESC: Helper function to link library files
+#    DESC: Helper function to link include files
 # PARAM 1: seed name
-# PARAM 2: include dir - defaults to 'include'
 #===============================================
 link_include()
 {
   local seed_name=$1
-  local include_dir=$2
+  local include_dir='include'
+  link_files $seed_name $include_dir
+}
 
-  [ ".$include_dir" ==  "." ] && include_dir='include'
+#===============================================
+#    NAME: link_share
+#    DESC: Helper function to link share files
+# PARAM 1: seed name
+#===============================================
+link_share()
+{
+  local seed_name=$1
+  local share_dir='share'
+  link_files $seed_name $share_dir
+}
+
+#===============================================
+#    NAME: link_share
+#    DESC: Helper function to link man files
+# PARAM 1: seed name
+#===============================================
+link_man()
+{
+  local seed_name=$1
+  local man_dir='man'
+  link_files $seed_name $man_dir
+}
+
+#===============================================
+#    NAME: link_files
+#    DESC: Helper function to link files in a 
+#          given directory.
+# PARAM 1: seed name
+# PARAM 2: dir_from - directory to link files from.
+# PARAM 3: dir_to  - directory to link files to.
+#          Defaults to dir_from.
+#===============================================
+link_files()
+{
+  local seed_name=$1
+  local dir_name=$2
+  local dir_to_name=$3
+  [ ".$dir_to_name" ==  "." ] && dir_to_name=$dir_name
+
+  # first unlink all current files related to this
+  #  seed_name
+  unlink_files $seed_name $dir_name
+
+  # old_root is the full path to the root directory of
+  #  dir_name inside of the seed's stage directory.
+  local old_root="$STAGE_DIR/$seed_name/${dir_name}"
+
+  # new_root is where the files will be simlinked to
+  local new_root="$LOCAL_DIR/${dir_to_name}"
 
   switch_current $seed_name
-  for f in `ls $STAGE_DIR/current/${include_dir}/*`
+
+  # loop through all files in old_root
+  for f in `find $old_root -type f`
   do
-    local bn=`basename $f`
-    log "linking from include [$f]"
-    rm -f $INCLUDE_DIR/$bn
-    ln -s $STAGE_DIR/current/${include_dir}/$f $INCLUDE_DIR/$bn
+
+    # regex replacement. replaces old_root with new_root
+    local new_file_path=${f//$old_root/$new_root}
+    log "linking $f to $new_file_path"
+
+    # make directory if necessary
+    mkdir -p `dirname ${new_file_path}`
+    ln -s $f $new_file_path
   done
   return 0
 }
 
 #===============================================
-#    NAME: link_share
-#    DESC: Helper function to link library files
+#    NAME: unlink_files
+#    DESC: Helper function to unlink files
+#          found linked from a seed directory
 # PARAM 1: seed name
-# PARAM 2: share dir - defaults to 'share'
+# PARAM 2: dir to look for to find files sym linked
+#           from seed_name's stage dir
 #===============================================
-link_share()
+unlink_files()
 {
   local seed_name=$1
-  local share_dir=$2
+  local dir_name=$2
+  log "unlinking files from $seed_name in $dir_name"
 
-  [ ".$share_dir" ==  "." ] && share_dir='share'
+  # full_active_dir is the directory we are
+  #  searching in to find files to remove
+  local full_active_dir="$LOCAL_DIR/${dir_name}"
 
-  switch_current $seed_name
-  for f in `ls $STAGE_DIR/current/${share_dir}/*`
+  # full_search_dir is the directory that we
+  #  are searching for sym links into. If
+  #  a sym link inside full_active_dir includes
+  #  full_search_dir in its path, it will be
+  #  removed.
+  local full_search_dir="$STAGE_DIR/$seed_name"
+
+  for f in `find -P $full_active_dir`
   do
-    local bn=`basename $f`
-    log "linking from lib [$f]"
-    rm -f $SHARE_DIR/$bn
-    ln -s $STAGE_DIR/current/${share_dir}/$f $SHARE_DIR/$bn
+    # readlink gives symlink path for a file
+    # ref: http://stackoverflow.com/questions/130329/how-do-you-get-what-a-symbolic-link-points-to-without-grep
+    local sym_link_path=`readlink $f`
+
+    # alternative to using regex inside bash.
+    # could be done another way
+    # ref: http://www.unix.com/unix-dummies-questions-answers/43073-regex-if-then-else-statement-match-strings.html
+    if echo $sym_link_path | grep "$full_search_dir"
+    then
+      log "removing $f from $dir_name"
+      rm $f
+    fi
   done
   return 0
 }

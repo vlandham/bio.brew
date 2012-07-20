@@ -1,5 +1,5 @@
 
-local version="0.10.0"
+local version="0.10.1"
 local type="zip"
 local URL="http://www.bioinformatics.bbsrc.ac.uk/projects/fastqc/fastqc_v${version}.${type}"
 local zip_file=`basename $URL`

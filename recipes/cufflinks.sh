@@ -1,4 +1,4 @@
-local version="1.3.0"
+local version="2.0.2"
 local seed_name="cufflinks_$version"
 local type="tar.gz"
 local URL="http://cufflinks.cbcb.umd.edu/downloads/cufflinks-${version}.Linux_x86_64.${type}"

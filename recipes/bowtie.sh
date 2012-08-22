@@ -22,7 +22,7 @@ do_activate()
 
 do_test()
 {
-  $STAGE_DIR/$seed_name/bowtie /n/data1/genomes/igenome/Mus_musculus/UCSC/mm9/Sequence/BowtieIndex/genome $STAGE_DIR/../../stowers.bio.brew/tests/sample.fastq
+  $STAGE_DIR/$seed_name/bowtie /n/data1/genomes/igenome/Mus_musculus/UCSC/mm9/Sequence/BowtieIndex/genome $BB_PATH/tests/sample.fastq
 }
 
 do_remove()

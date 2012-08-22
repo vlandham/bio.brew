@@ -1,4 +1,4 @@
-local version="2.15.0"
+local version="2.16.2"
 local type="tar.gz"
 local URL="http://bedtools.googlecode.com/files/BEDTools.v${version}.${type}"
 local tb_file=`basename $URL`

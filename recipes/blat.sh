@@ -1,10 +1,10 @@
-local version="34"
+local version="35"
 local type="zip"
 local tool_name="blatSrc"
 local URL="http://hgwdev.cse.ucsc.edu/~kent/src/${tool_name}${version}.${type}"
 local tb_file=`basename $URL`
 local seed_name="blat-${version}"
-local install_files=(bin/blat bin/pslPretty bin/pslReps bin/pslSort)
+local install_files=(bin/gfClient bin/gfServer bin/blat bin/pslPretty bin/pslReps bin/pslSort)
 
 do_install()
 {

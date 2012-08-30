@@ -13,7 +13,7 @@ do_install()
 do_activate()
 {
   for_env "export PERLBREW_ROOT='$STAGE_DIR/$seed_name'"
-  # for_env "export PATH=\\"\\$PERLBREW_ROOT/bin:\\$PATH\\""
+  for_env "export PERLBREW_HOME='$STAGE_DIR/$seed_name'"
   for_env "source $STAGE_DIR/$seed_name/etc/bashrc"
 }
 

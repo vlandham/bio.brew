@@ -180,8 +180,9 @@ link_from_stage()
 link_library()
 {
   local seed_name=$1
-  local lib_dir='lib'
-  link_files $seed_name $lib_dir
+  local lib_dir=$2
+  [ ".$lib_dir" ==  "." ] && lib_dir='lib'
+  link_files $seed_name $lib_dir 'lib'
 }
 
 #===============================================
@@ -192,8 +193,9 @@ link_library()
 link_include()
 {
   local seed_name=$1
-  local include_dir='include'
-  link_files $seed_name $include_dir
+  local include_dir=$2
+  [ ".$include_dir" ==  "." ] && include_dir='include'
+  link_files $seed_name $include_dir 'include'
 }
 
 #===============================================
@@ -204,8 +206,9 @@ link_include()
 link_share()
 {
   local seed_name=$1
-  local share_dir='share'
-  link_files $seed_name $share_dir
+  local share_dir=$2
+  [ ".$share_dir" ==  "." ] && share_dir='share'
+  link_files $seed_name $share_dir 'share'
 }
 
 #===============================================
@@ -216,8 +219,9 @@ link_share()
 link_man()
 {
   local seed_name=$1
-  local man_dir='man'
-  link_files $seed_name $man_dir
+  local man_dir=$2
+  [ ".$man_dir" ==  "." ] && man_dir='man'
+  link_files $seed_name $man_dir 'man'
 }
 
 #===============================================

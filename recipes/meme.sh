@@ -22,6 +22,8 @@ do_activate()
   switch_current $seed_name
   ln -s $STAGE_DIR/current/install/bin $BIN_DIR/meme
   for_env "export PATH=\"$BIN_DIR/meme:\$PATH\""
+  link_include $seed_name 'install/include'
+  link_library $seed_name 'install/lib'
 }
 
 do_test()

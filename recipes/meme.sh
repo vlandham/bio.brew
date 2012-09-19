@@ -12,7 +12,7 @@ do_install()
   decompress_tool $tb_file $type
   mv $seed_name $STAGE_DIR
   cd $STAGE_DIR/$seed_name
-  configure_tool $seed_name "--with-url=\"http://meme.ncbr.net/meme\" --enable-build-libxml2 --enable-build-libxslt --with-python=/usr/bin/python" "$STAGE_DIR/$seed_name/install"
+  configure_tool $seed_name "--with-url=\"http://meme.ncbr.net/meme\" --enable-build-libxml2 --enable-build-libxslt --with-mpidir=/n/local/stage/mpich2/current/install --with-python=/usr/bin/python" "$STAGE_DIR/$seed_name/install"
   make_tool $seed_name $make_j
   install_tool $seed_name
 }

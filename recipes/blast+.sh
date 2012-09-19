@@ -22,6 +22,8 @@ do_install()
 do_activate()
 {
   link_from_stage $seed_name ${install_files[@]}
+  for_env "export BLASTDB='/n/data1/blast/db'"
+  for_env "export BLASTMAT=$STAGE_DIR/$seed_name/data'"
 }
 
 do_remove()

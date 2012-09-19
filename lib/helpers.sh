@@ -263,7 +263,7 @@ link_files()
 
     # make directory if necessary
     mkdir -p `dirname ${new_file_path}`
-    ln -s $f $new_file_path
+    ln -f -s $f $new_file_path
   done
   return 0
 }

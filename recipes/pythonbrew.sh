@@ -8,6 +8,7 @@ do_install()
   cd $STAGE_DIR
   mkdir $seed_name
   export PYTHONBREW_ROOT=$STAGE_DIR/$seed_name
+  export PYTHONBREW_HOME=$STAGE_DIR/$seed_name/home
   curl -kLO $URL
   chmod +x pythonbrewinstall
   ./pythonbrewinstall
@@ -16,6 +17,7 @@ do_install()
 do_activate()
 {
   for_env "export PYTHONBREW_ROOT='$STAGE_DIR/$seed_name'"
+  for_env "export PYTHONBREW_HOME='$STAGE_DIR/$seed_name/home'"
   for_env "[[ -s $STAGE_DIR/$seed_name/etc/bashrc ]] && source $STAGE_DIR/$seed_name/etc/bashrc"
 }
 

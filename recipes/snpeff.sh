@@ -1,5 +1,5 @@
 
-local version="2_0_5d"
+local version="3_0"
 local type="zip"
 local tb_file="snpEff_v${version}_core.${type}"
 local URL="http://sourceforge.net/projects/snpeff/files/${tb_file}"

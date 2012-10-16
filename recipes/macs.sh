@@ -26,6 +26,7 @@ do_activate()
   # pip
   # pip install MACS2
   # link_from_stage $seed_name ${install_files[@]}
+  log 'active'
 }
 
 do_remove()

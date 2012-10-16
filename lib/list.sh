@@ -25,7 +25,7 @@ bb_list()
           full_name="$recipe/$installed_seed"
           [ $(check_if_active $full_name) == "1" ] && installed="A" || installed="I"
           [ $(check_if_fake $full_name) == "1" ] && installed="F"
-          printf "%s : %-24.24s : %s\n" "$installed" "$installed_seed" "$s_deps"
+          printf "%s : %-15.15s : %-10.10s :  %s\n" "$installed" "$recipe" "$version" "$installed_seed"
         done
       else
         if [ "$sub_command" != "installed" ]

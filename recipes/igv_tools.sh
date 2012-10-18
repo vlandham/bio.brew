@@ -6,7 +6,7 @@ local URL="http://www.broadinstitute.org/igv/projects/downloads/${tb_file}"
 local tb_dir="IGVTools"
 local seed_name="igvtools_${version}"
 local deps=(java)
-local install_files=()
+local install_files=(igvtools igvtools.jar)
 
 do_install()
 {
@@ -21,6 +21,7 @@ do_activate()
 {
   switch_current $seed_name
   for_env "export IGVTOOLS='$STAGE_DIR/current'"
+  link_from_stage $seed_name ${install_files[@]}
 }
 
 do_test()

@@ -31,6 +31,7 @@ SHARE_DIR="$LOCAL_DIR/share"
 
 # bio.brew specific paths
 RECIPE_DIR="$MAIN_DIR/recipes"
+RESOURCES_DIR="$MAIN_DIR/resources"
 LOG_DIR="$MAIN_DIR/logs"
 
 #===============================================

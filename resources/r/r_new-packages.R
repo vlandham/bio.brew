@@ -9,7 +9,7 @@
 
 ## setup
 
-begin <- Sys.time(); begin
+setup.begin <- Sys.time(); setup.begin
 source("/n/projects/apa/R/apa_tools.R")  # for qw, mgrep, write.vector
 source("http://www.bioconductor.org/biocLite.R")
 R.ver <- paste(R.version$major, R.version$minor, sep="."); R.ver
@@ -19,26 +19,25 @@ repos["CRAN"] <- "http://cran.wustl.edu"
 options(repos=repos)
 options(BioC_mirror = "http://www.bioconductor.org")
 logprefix <- paste("/n/local/bin/bio.brew/logs/r/R-",R.ver,sep="")
-packlist <- list(CRAN=c(), BioC.software=c(), BioC.annotation=c())
+packlist <- finish.times <- list(CRAN=c(), BioC.software=c(), BioC.annotation=c())
 strings <- bioc.annots <- list()
 
 
 
-
-## get/set packlists
+## get/set CRAN and BioC.software packlists
 
 # CRAN packages, broken out into functional grouups
 #CRAN <- rownames(available.packages(contrib.url(getOption("repos"))))
 dataframes <- qw(sqldf,dataframe,data.table,WriteXLS)
 phylo <- qw(ape,pegas)
 parallel <- qw(Rmpi,parallel,snow,multicore)
-database <- qw(RMySQL,RPostgreSQL,RODBC,RSQLite,RSQLite.extfuns)
-hadley <- qw(plyr,stringr,ggplot2)
-analysis <- qw(combinat,hsaur,MASS)
-graphics <- qw(scatterplot3d)
+database <- qw(RMySQL,RpgSQL,RODBC,RSQLite,RSQLite.extfuns)
+hadley <- qw(plyr,stringr,ggplot2,reshape2)
+analysis <- qw(combinat,rpart,HSAUR,MASS,zoo,circular)
+graphics <- qw(scatterplot3d,plotrix)
 misc <- qw(R.oo,knitR,knitcitations)
 
-packlist$CRAN <- c(dataframes,phylo,parallel,database,hadley,analysis,graphics,misc)   # and RCurl and Rgraphviz, but manually
+packlist$CRAN <- c(dataframes,phylo,parallel,database,hadley,analysis,graphics,misc)
 
 packlist$BioC.software <- rownames(available.packages(paste("http://www.bioconductor.org/packages",bioc.ver,"bioc/src/contrib/",sep="/")))
 
@@ -80,6 +79,7 @@ write.vector(setdiff(BioC.annot, packlist$BioC.annotation), paste(logprefix,"_Bi
 
 ## install packages
 
+begin.install <- Sys.time()
 for (p in names(packlist)) {
     logfile <- paste(logprefix,p,"install.log",sep="_")
     if (file.exists(logfile)) {
@@ -95,19 +95,25 @@ for (p in names(packlist)) {
         if (packlist[[p]][i] %in% rownames(already)) { 
 	   next
 	} else {
-           message("Package: ",i," / ",N,"\n")
+           message("\nPackage: ",i," / ",N,"\n")
            time <- system.time( biocLite(packlist[[p]][i], suppressUpdates=TRUE) )
            writeLines(sprintf("%i\t%s\t%0.2f",i,packlist[[p]][i],time[[3]],sep="\t"), fh)
     	}
     	flush.connection(fh)
     }
+    finish.times[[p]] <- Sys.time(); message("\n",p," complete: ",finish.times[[p]],"\n")
 }
-writeLines("Complete!", fh)
+writeLines("\nComplete!", fh)
 
 save(packlist, file=paste(logprefix,"packlist.Rdata",sep="."))
-end <- Sys.time()
+finished <- Sys.time()
 
-message("begin: ", begin)
-message("  end: ", end)
+message("setup:                    ", begin.setup)
+message("installing:               ", begin.install)
+message("CRAN complete:            ", finish.times[["CRAN"]])
+message("BioC.software complete:   ", finish.times[["BioC.software"]])
+message("BioC.annotation complete: ", finish.times[["BioC.annotation"]])
+message("finished:                 ", finished)
 
 
+## EOF

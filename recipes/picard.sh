@@ -1,12 +1,12 @@
-
-local version="1.75"
+local version="1.79"
 local type="zip"
 local tb_file="picard-tools-${version}.${type}"
 local URL="http://sourceforge.net/projects/picard/files/picard-tools/${version}/${tb_file}"
 local tb_dir=`basename $tb_file .$type`
 local seed_name="picard_${version}"
 local deps=(java)
-local install_files=(AddOrReplaceReadGroups.jar CleanSam.jar CollectRnaSeqMetrics.jar ExtractIlluminaBarcodes.jar IlluminaBasecallsToSam.jar MergeSamFiles.jar ReplaceSamHeader.jar SortSam.jar BamIndexStats.jar CollectAlignmentSummaryMetrics.jar CompareSAMs.jar ExtractSequences.jar IntervalListTools.jar NormalizeFasta.jar RevertSam.jar ValidateSamFile.jar BamToBfq.jar CollectGcBiasMetrics.jar CreateSequenceDictionary.jar FastqToSam.jar MarkDuplicates.jar ViewSam.jar BuildBamIndex.jar CollectInsertSizeMetrics.jar DownsampleSam.jar FilterSamReads.jar MeanQualityByCycle.jar QualityScoreDistribution.jar SamFormatConverter.jar CalculateHsMetrics.jar CollectMultipleMetrics.jar EstimateLibraryComplexity.jar FixMateInformation.jar MergeBamAlignment.jar ReorderSam.jar SamToFastq.jar)
+local install_files=(AddOrReplaceReadGroups.jar BamIndexStats.jar BamToBfq.jar BuildBamIndex.jar CalculateHsMetrics.jar CheckIlluminaDirectory.jar CleanSam.jar CollectAlignmentSummaryMetrics.jar CollectGcBiasMetrics.jar CollectInsertSizeMetrics.jar CollectMultipleMetrics.jar CollectRnaSeqMetrics.jar CollectTargetedPcrMetrics.jar CompareSAMs.jar CreateSequenceDictionary.jar DownsampleSam.jar EstimateLibraryComplexity.jar ExtractIlluminaBarcodes.jar ExtractSequences.jar FastqToSam.jar FilterSamReads.jar FixMateInformation.jar IlluminaBasecallsToSam.jar IntervalListTools.jar MarkDuplicates.jar MeanQualityByCycle.jar MergeBamAlignment.jar MergeSamFiles.jar NormalizeFasta.jar QualityScoreDistribution.jar ReorderSam.jar ReplaceSamHeader.jar RevertSam.jar SamFormatConverter.jar SamToFastq.jar SortSam.jar ValidateSamFile.jar ViewSam.jar)
+
 
 do_install()
 {

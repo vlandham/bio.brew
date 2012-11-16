@@ -1,8 +1,8 @@
-local version="2.16.2"
+local version="2.17.0"
 local type="tar.gz"
 local URL="http://bedtools.googlecode.com/files/BEDTools.v${version}.${type}"
 local tb_file=`basename $URL`
-local tar_name="BEDTools-Version-${version}"
+local tar_name="BEDTools-v${version}"
 local seed_name="bedtools-${version}"
 local install_files=(bin/annotateBed
 bin/bamToBed
@@ -44,10 +44,9 @@ do_install()
   cd $TB_DIR
   download $URL $tb_file
   decompress_tool $tb_file $type
-  mv $tar_name $STAGE_DIR/$seed_name
+  mv $TB_DIR/$seed_name $STAGE_DIR/$seed_name
   cd $STAGE_DIR/$seed_name
   make_tool $seed_name $make_j
-  cd ..
 }
 
 do_activate()

@@ -1,4 +1,4 @@
-local version="2.0.4"
+local version="2.0.6"
 local seed_name="tophat_$version"
 local platform="Linux_x86_64"
 local type="tar.gz"

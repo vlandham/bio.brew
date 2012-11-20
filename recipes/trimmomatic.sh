@@ -26,8 +26,6 @@ do_activate()
 
 do_test()
 {
-  cd $STAGE_DIR
-  java -jar $STAGE_DIR/$seed_name/CollectAlignmentSummaryMetrics.jar REFERENCE_SEQUENCE=/n/data1/genomes/igenome/Mus_musculus/UCSC/mm9/Sequence/BWAIndex/genome.fa INPUT=../../stowers.bio.brew/tests/sample.bam OUTPUT=../../stowers.bio.brew/tests/picard.txt VALIDATION_STRINGENCY=SILENT
 }
 
 do_remove()

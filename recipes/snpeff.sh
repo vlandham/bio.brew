@@ -1,11 +1,13 @@
 
-local version="3_0"
+local version="3_1"
 local type="zip"
 local tb_file="snpEff_v${version}_core.${type}"
 local URL="http://sourceforge.net/projects/snpeff/files/${tb_file}"
 local tb_dir=`basename $tb_file .$type`
 local seed_name="snpEff_${version}"
 local deps=(java)
+
+local databases=(WS220.66)
 
 do_install()
 {
@@ -14,6 +16,11 @@ do_install()
   decompress_tool $tb_file $type
   # mv $tb_dir $seed_name
   mv $seed_name $STAGE_DIR
+  cd $STAGE_DIR/$seed_name
+  # TODO: make this into an array and iterate
+  # stop being so lazy
+  java -jar ./snpEff.jar download WS220.66
+  java -jar ./snpEff.jar download Zv9.66
 }
 
 do_activate()

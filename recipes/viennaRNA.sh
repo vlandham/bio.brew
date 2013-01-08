@@ -11,7 +11,6 @@ local URL="http://www.tbi.univie.ac.at/~ronny/RNA/ViennaRNA-$version.$type"  # n
 
 local tb_file=`basename $URL`
 local seed_name="ViennaRNA-${version}"
-local install_files=()
 
 do_install()
 {
@@ -25,11 +24,24 @@ do_install()
   configure_tool $seed_name "--with-forester --with-cluster --datadir=$STAGE_DIR/$seed_name/install" "$STAGE_DIR/$seed_name/install"
   make_tool $seed_name $make_j 
   install_tool $seed_name
+
+  # for some reason the '--with-forester' flag isn't working. 
+  # so lets build that part manually
+  cd $STAGE_DIR/$seed_name/RNAforester
+  ./configure --prefix "${STAGE_DIR}/${seed_name}/install"
+  make
+  make install
 }
 
 do_activate()
 {
-  link_from_stage $seed_name ${install_files[@]}
+  switch_current $seed_name
+  link_bin $seed_name 'install/bin'
+  link_bin $seed_name 'install/ViennaRNA/bin'
+  link_library $seed_name 'install/lib'
+  link_include $seed_name 'install/include'
+  link_share $seed_name 'install/share'
+
 }
 
 do_test()

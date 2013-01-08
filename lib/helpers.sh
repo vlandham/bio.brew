@@ -173,6 +173,19 @@ link_from_stage()
 }
 
 #===============================================
+#    NAME: link_include
+#    DESC: Helper function to link include files
+# PARAM 1: seed name
+#===============================================
+link_bin()
+{
+  local seed_name=$1
+  local bin_dir=$2
+  [ ".$bin_dir" ==  "." ] && bin_dir='bin'
+  link_files $seed_name $bin_dir 'bin'
+}
+
+#===============================================
 #    NAME: link_library
 #    DESC: Helper function to link library files
 # PARAM 1: seed name

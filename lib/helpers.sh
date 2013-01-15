@@ -238,6 +238,32 @@ link_man()
 }
 
 #===============================================
+#    NAME: link_libexec
+#    DESC: Helper function to link libexec files
+# PARAM 1: seed name
+#===============================================
+link_libexec()
+{
+  local seed_name=$1
+  local libexec_dir=$2
+  [ ".$libexec_dir" ==  "." ] && libexec_dir='libexec'
+  link_files $seed_name $libexec_dir 'libexec'
+}
+
+#===============================================
+#    NAME: link_libexec
+#    DESC: Helper function to link libexec files
+# PARAM 1: seed name
+#===============================================
+link_var()
+{
+  local seed_name=$1
+  local var=$2
+  [ ".$var" ==  "." ] && var='var'
+  link_files $seed_name $var 'var'
+}
+
+#===============================================
 #    NAME: link_files
 #    DESC: Helper function to link files in a 
 #          given directory.

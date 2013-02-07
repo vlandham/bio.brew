@@ -26,6 +26,7 @@ do_activate()
 
 do_test()
 {
+  log "test"
 }
 
 do_remove()

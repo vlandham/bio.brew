@@ -1,4 +1,4 @@
-local version="2.15.1"
+local version="2.15.2"
 local bigversion=${version:0:1}
 local URL="http://www.cran.r-project.org/src/base/R-$bigversion/R-$version.tar.gz"
 local tb_file=`basename $URL`
@@ -12,10 +12,10 @@ do_install()
   download $URL $tb_file
   decompress_tool $tb_file $type
   cd $seed_name
-  configure_tool $seed_name "--enable-R-shlib --enable-memory-profiling --enable-static --enable-shared"
+  configure_tool $seed_name "--enable-R-shlib --enable-memory-profiling --enable-static --enable-shared --with-tcltk"
   make_tool $seed_name $make_j
   install_tool $seed_name
-  ($STAGE_DIR/$seed_name/bin/R --vanilla < $RESOURCES_DIR/r_new-packages.R > $LOG_DIR/${seed_name}.r_new-packages.Rout 2>&1) | tee $LOG_DIR/${seed_name}.r_new-packages.err
+  ($STAGE_DIR/$seed_name/bin/R --vanilla < $RESOURCES_DIR/r/r_new-packages.R > $LOG_DIR/${seed_name}.r_new-packages.Rout 2>&1) | tee $LOG_DIR/${seed_name}.r_new-packages.err
 }
 
 do_activate()

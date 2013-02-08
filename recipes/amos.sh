@@ -4,6 +4,7 @@ local URL="http://downloads.sourceforge.net/project/amos/amos/${version}/amos-${
 local tb_file=`basename $URL`
 local seed_name="amos-${version}"
 local install_files=(minimus minimus2)
+local deps=(expat)
 
 do_install()
 {
@@ -14,6 +15,7 @@ do_install()
   cd $STAGE_DIR/$seed_name
   configure_tool $seed_name
   make_tool $seed_name $make_j
+  #this is still not working because it can't find -lexpat...
 }
 
 do_activate()

@@ -35,7 +35,7 @@ database <- qw(RMySQL,RpgSQL,RODBC,RSQLite,RSQLite.extfuns)
 hadley <- qw(plyr,stringr,ggplot2,reshape2)
 analysis <- qw(combinat,rpart,HSAUR,MASS,zoo,circular)
 graphics <- qw(scatterplot3d,plotrix)
-misc <- qw(R.oo,knitR,knitcitations)
+misc <- qw(R.oo,knitR,knitcitations,optparse)
 
 packlist$CRAN <- c(dataframes,phylo,parallel,database,hadley,analysis,graphics,misc)
 
@@ -52,7 +52,7 @@ BioC.annot <- rownames(available.packages(paste("http://www.bioconductor.org/pac
 strings[[1]] <- paste("^BSgenome\\.",qw(Hsap,Mmus,Ggal,Drer,Dmel,Cele,Scer),sep="")   # matching "BSgenome.Gspe"
 
 # genus/species strings for org.*.db, hom.*.inp.db, etc.
-strings[[2]] <- paste("*\\.",qw(Hs,Mm,Gg,Dr,Dm,Ce,Sc,Sp),"\\.*",sep=""),   # matching ".Gs."
+strings[[2]] <- paste("*\\.",qw(Hs,Mm,Gg,Dr,Dm,Ce,Sc,Sp),"\\.*",sep="")   # matching ".Gs."
 
 # prefixes for cdf, .db, other microarray packages
 strings[[3]] <- paste("^",qw(hgu,hthgu,gahgu,hu,Hu,hg,Hs,u133,illuminaHu,lumiH,mgu,htmg,mo,mu,illuminaMo,lumiMo,ye,yg,human,mouse,celegans,chicken,dros,fly,worm,zebrafish,OperonHuman,HumanMeth),sep="")

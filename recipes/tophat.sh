@@ -1,6 +1,10 @@
-local version="2.0.6"
+local version="2.0.7"
 local seed_name="tophat_$version"
 local platform="Linux_x86_64"
+local os=`uname -s`
+if [ "$os" == "Darwin" ] ; then
+  platform="OSX_x86_64"
+fi
 local type="tar.gz"
 local URL="http://tophat.cbcb.umd.edu/downloads/tophat-${version}.${platform}.${type}"
 local tb_file=`basename $URL`

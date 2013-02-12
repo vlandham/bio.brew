@@ -1,11 +1,6 @@
 local version="2.0.6"
 local type="zip"
-local os=`uname -s`
-local bowtie_os="linux"
-if [ "$os" == "Darwin" ] ; then
-  bowtie_os="macos"
-fi
-local URL="http://downloads.sourceforge.net/project/bowtie-bio/bowtie2/${version}/bowtie2-${version}-${bowtie_os}-x86_64.${type}"
+local URL="http://downloads.sourceforge.net/project/bowtie-bio/bowtie2/${version}/bowtie2-${version}-macos-x86_64.${type}"
 local tb_file=`basename $URL`
 local seed_name="bowtie2-${version}"
 local install_files=(bowtie2 bowtie2-align bowtie2-build bowtie2-inspect)

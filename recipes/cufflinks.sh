@@ -1,7 +1,12 @@
 local version="2.0.2"
 local seed_name="cufflinks_$version"
 local type="tar.gz"
-local URL="http://cufflinks.cbcb.umd.edu/downloads/cufflinks-${version}.Linux_x86_64.${type}"
+local platform="Linux_x86_64"
+local os=`uname -s`
+if [ "$os" == "Darwin" ] ; then
+  platform="OSX_x86_64"
+fi
+local URL="http://cufflinks.cbcb.umd.edu/downloads/cufflinks-${version}.${platform}.${type}"
 local tb_file=`basename $URL`
 # note the '.' in the basname call below
 local tb_dir=`basename $URL .$type`

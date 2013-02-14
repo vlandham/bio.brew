@@ -28,7 +28,9 @@ COMMANDS:
   test     : run recipe tests.
   activate : make this recipe live.
   fake     : pretend to install this recipe.
-  clean    : remove all traces of a recipe. Useful if something goes wrong
+  clean    : USE WITH CAUTION!
+             remove all traces of a recipe/program. 
+             Useful when testing a recipe.
 
 OPTIONS:
   -v: print version.

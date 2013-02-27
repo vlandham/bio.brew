@@ -1,4 +1,4 @@
-local version="2.0.6"
+local version="2.1.0"
 local type="zip"
 local os=`uname -s`
 local bowtie_os="linux"

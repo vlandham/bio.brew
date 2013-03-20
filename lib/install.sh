@@ -217,6 +217,8 @@ before_install()
 after_install()
 {
   local recipe_name=$1
+  log "chmod -R 755 $STAGE_DIR"
+  chmod -R 755 $STAGE_DIR
   local lock_file="$LOG_DIR/$recipe_name.lock"
   local install_flag="$LOG_DIR/$recipe_name.installed"
   log "recipe [$recipe_name] installed."

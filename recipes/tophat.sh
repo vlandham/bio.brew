@@ -1,4 +1,4 @@
-local version="2.0.8"
+local version="2.0.8b"
 local seed_name="tophat_$version"
 local platform="Linux_x86_64"
 local os=`uname -s`

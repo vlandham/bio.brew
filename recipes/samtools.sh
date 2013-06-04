@@ -1,9 +1,11 @@
-local version="0.1.18"
+local version="0.1.19"
 local type="tar.bz2"
 # sourceforge mirror was found by copying download link in 
 # Firefox's download manager.
-local URL="http://sourceforge.net/projects/samtools/files/samtools/${version}/samtools-${version}.${type}/download"
-local tb_file=`basename $URL`
+
+# warning - This link has changed a few times now...
+local URL="http://sourceforge.net/projects/samtools/files/samtools/${version}/samtools-${version}.${type}"
+local tb_file="samtools-${version}.${type}";
 local seed_name="samtools-${version}"
 local install_files=(samtools misc/samtools.pl bcftools/bcftools bcftools/vcfutils.pl)
 

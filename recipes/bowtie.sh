@@ -1,4 +1,4 @@
-local version="0.12.9"
+local version="1.0.0"
 local type="zip"
 local URL="http://downloads.sourceforge.net/project/bowtie-bio/bowtie/${version}/bowtie-${version}-src.${type}"
 local tb_file=`basename $URL`

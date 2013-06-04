@@ -1,4 +1,4 @@
-local version="2.0.2"
+local version="2.1.1"
 local seed_name="cufflinks_$version"
 local type="tar.gz"
 local platform="Linux_x86_64"

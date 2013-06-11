@@ -202,7 +202,7 @@ before_install()
   mkdir -p $INCLUDE_DIR
   mkdir -p $SHARE_DIR
 
-  [ -f $LOG_DIR/$recipe_name.lock ] && usage 1 "Other instance is working on $recipe_name. Bailing out."
+  [ -f $LOG_DIR/$recipe_name.lock ] && error "Other instance is working on $recipe_name. Bailing out.\nTry 'bb clean $recipe_name' if you are having problems"
   touch $LOG_DIR/$recipe_name.lock
 }
 

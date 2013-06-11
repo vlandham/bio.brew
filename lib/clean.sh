@@ -10,7 +10,7 @@ bb_clean()
 
 do_clean()
 {
-  local recipe_name=$1
+  local seed_name=$1
   local lock_file="$LOG_DIR/$recipe_name.lock"
   local install_flag="$LOG_DIR/$recipe_name.installed"
   log "removing $lock_file"
@@ -21,6 +21,9 @@ do_clean()
   log "removing $LOG_DIR"
   rm -rf $LOG_DIR
   # same for STAGE_DIR
-  log "removing $STAGE_DIR"
-  rm -rf $STAGE_DIR
+  log "removing $STAGE_DIR/$seed_name"
+  rm -rf $STAGE_DIR/$seed_name
+
+  log "removing $TB_DIR/$tb_file if present"
+  [ -f $TB_DIR/$tb_file ] && rm $TB_DIR/$tb_file
 }

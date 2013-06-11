@@ -74,27 +74,27 @@ case $action in
     bb_list $2
     ;;
   "install")
-    [ ".$recipe" == "." ] && usage 1 "I need a recipe."
+    [ ".$recipe" == "." ] && error "I need a recipe name."
     bb_install $recipe $make_j  
     ;;
   "remove")
-    [ ".$recipe" == "." ] && usage 1 "I need a recipe."
+    [ ".$recipe" == "." ] && error "I need a recipe name."
     bb_remove $recipe
     ;;
   "activate")
-    [ ".$recipe" == "." ] && usage 1 "I need a recipe."
+    [ ".$recipe" == "." ] && error "I need a recipe name."
     bb_activate $recipe
     ;;
   "test")
-    [ ".$recipe" == "." ] && usage 1 "I need a recipe."
+    [ ".$recipe" == "." ] && error "I need a recipe name."
     bb_test $recipe
     ;;
   "fake")
-    [ ".$recipe" == "." ] && usage 1 "I need a recipe."
+    [ ".$recipe" == "." ] && error "I need a recipe name."
     bb_fake $recipe
     ;;
   "clean")
-    [ ".$recipe" == "." ] && usage 1 "I need a recipe."
+    [ ".$recipe" == "." ] && error "I need a recipe name."
     bb_clean $recipe
     ;;
   *)

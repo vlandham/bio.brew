@@ -10,7 +10,7 @@ bb_remove()
 before_remove()
 {
   local recipe_name=$1
-  [ -f $LOG_DIR/$recipe_name.lock ] && usage 1 "Other instance is working on $recipe_name. Bailing out."
+  [ -f $LOG_DIR/$recipe_name.lock ] && error "Other instance is working on $recipe_name. Bailing out."
   touch $LOG_DIR/$recipe_name.lock
 }
 

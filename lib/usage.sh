@@ -41,3 +41,13 @@ EOF
   bye $e_code
 }
 
+error()
+{
+  e_msg=$1
+  e_code=1
+  if [ ".$e_msg" != "." ]; then
+    echo "ERROR: $e_msg"
+    echo ""
+  fi
+  bye $e_code
+}

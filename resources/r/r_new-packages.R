@@ -6,6 +6,8 @@
 ##  - on that note, see "BioC_annotation_selected.log" and "BioC_annotation_skipped.log" post-installation to make sure everything was in order
 
 
+write("Installing R Packages...\n", stderr())
+
 
 ## setup
 

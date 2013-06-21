@@ -19,6 +19,8 @@ configure_tool()
 
   [ ".$prefix" ==  "." ] && prefix=$STAGE_DIR/$seed_name
   log "running configure [logging output: $log_file]"
+  log "prefix: $prefix"
+  log "options: $options"
   ./configure --prefix=$prefix $options &> $log_file
 }
 

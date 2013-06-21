@@ -1,7 +1,7 @@
 
 ### 2.0.7 IN PROGRESS - APA
 
-local version="2.0.7"
+local version="2.1.1"
 local type="tar.gz"
 # sourceforge mirror was found by copying download link in 
 # Firefox's download manager.

@@ -1,4 +1,4 @@
-local version="2.15.2"
+local version="3.0.1"
 local bigversion=${version:0:1}
 local URL="http://www.cran.r-project.org/src/base/R-$bigversion/R-$version.tar.gz"
 local tb_file=`basename $URL`

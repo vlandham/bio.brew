@@ -1,4 +1,4 @@
-local version="0.1.19"
+local version="0.1.18"
 local type="tar.bz2"
 # sourceforge mirror was found by copying download link in 
 # Firefox's download manager.

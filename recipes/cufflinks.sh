@@ -25,6 +25,11 @@ do_install()
   mv $seed_name $STAGE_DIR
 }
 
+do_test()
+{
+  tophat -N 0 -g 1 -x 1 --no-coverage-search /n/data1/genomes/bowtie-index/mm9/mm9 $BB_PATH/tests/sample.fastq
+  $STAGE_DIR/$seed_name/cufflinks ./tophat_out/accepted_hits.bam
+}
 do_activate()
 {
   link_from_stage $seed_name ${install_files[@]}

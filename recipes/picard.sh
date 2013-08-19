@@ -1,11 +1,11 @@
-local version="1.92"
+local version="1.96"
 local type="zip"
 local tb_file="picard-tools-${version}.${type}"
 local URL="http://sourceforge.net/projects/picard/files/picard-tools/${version}/${tb_file}"
 local tb_dir=`basename $tb_file .$type`
 local seed_name="picard_${version}"
 local deps=(java)
-local install_files=(AddOrReplaceReadGroups.jar BamIndexStats.jar BamToBfq.jar BuildBamIndex.jar CalculateHsMetrics.jar CheckIlluminaDirectory.jar CleanSam.jar CollectAlignmentSummaryMetrics.jar CollectGcBiasMetrics.jar CollectInsertSizeMetrics.jar CollectMultipleMetrics.jar CollectRnaSeqMetrics.jar CollectTargetedPcrMetrics.jar CompareSAMs.jar CreateSequenceDictionary.jar DownsampleSam.jar EstimateLibraryComplexity.jar ExtractIlluminaBarcodes.jar ExtractSequences.jar FastqToSam.jar FilterSamReads.jar FixMateInformation.jar IlluminaBasecallsToSam.jar IntervalListTools.jar MarkDuplicates.jar MeanQualityByCycle.jar MergeBamAlignment.jar MergeSamFiles.jar NormalizeFasta.jar QualityScoreDistribution.jar ReorderSam.jar ReplaceSamHeader.jar RevertSam.jar SamFormatConverter.jar SamToFastq.jar SortSam.jar ValidateSamFile.jar ViewSam.jar)
+local install_files=(AddOrReplaceReadGroups.jar BamIndexStats.jar BamToBfq.jar BuildBamIndex.jar CalculateHsMetrics.jar CheckIlluminaDirectory.jar CleanSam.jar CollectAlignmentSummaryMetrics.jar CollectGcBiasMetrics.jar CollectInsertSizeMetrics.jar CollectMultipleMetrics.jar CollectRnaSeqMetrics.jar CollectTargetedPcrMetrics.jar CompareSAMs.jar CreateSequenceDictionary.jar DownsampleSam.jar EstimateLibraryComplexity.jar ExtractIlluminaBarcodes.jar ExtractSequences.jar FastqToSam.jar FilterSamReads.jar FixMateInformation.jar IlluminaBasecallsToSam.jar IlluminaBasecallsToFastq.jar IntervalListTools.jar MarkDuplicates.jar MeanQualityByCycle.jar MergeBamAlignment.jar MergeSamFiles.jar MergeVcfs.jar NormalizeFasta.jar QualityScoreDistribution.jar ReorderSam.jar ReplaceSamHeader.jar RevertSam.jar SamFormatConverter.jar SamToFastq.jar SortSam.jar SplitVcfs.jar ValidateSamFile.jar VcfFormatConverter.jar ViewSam.jar)
 
 
 do_install()
@@ -26,7 +26,8 @@ do_activate()
 do_test()
 {
   cd $STAGE_DIR
-  java -jar $STAGE_DIR/$seed_name/CollectAlignmentSummaryMetrics.jar REFERENCE_SEQUENCE=/n/data1/genomes/igenome/Mus_musculus/UCSC/mm9/Sequence/BWAIndex/genome.fa INPUT=../../stowers.bio.brew/tests/sample.bam OUTPUT=../../stowers.bio.brew/tests/picard.txt VALIDATION_STRINGENCY=SILENT
+  java -jar $STAGE_DIR/$seed_name/CollectAlignmentSummaryMetrics.jar REFERENCE_SEQUENCE=/n/data1/genomes/igenome/Mus_musculus/UCSC/mm9/Sequence/BWAIndex/genome.fa INPUT=$BB_PATH/tests/sample.bam OUTPUT=/tmp/picard.$seed_name.txt VALIDATION_STRINGENCY=SILENT
+  rm /tmp/picard*
 }
 
 do_remove()

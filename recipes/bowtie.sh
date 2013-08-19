@@ -22,7 +22,7 @@ do_activate()
 
 do_test()
 {
-  $STAGE_DIR/$seed_name/bowtie /n/data1/genomes/igenome/Mus_musculus/UCSC/mm9/Sequence/BowtieIndex/genome $BB_PATH/tests/sample.fastq
+  $STAGE_DIR/$seed_name/bowtie /n/data1/genomes/bowtie-index/sacCer2/sacCer2 $BB_PATH/tests/sample_yeast.fastq
 }
 
 do_remove()

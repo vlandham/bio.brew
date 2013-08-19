@@ -1,4 +1,4 @@
-local version="2.0.8b"
+local version="2.0.9"
 local seed_name="tophat_$version"
 local platform="Linux_x86_64"
 local os=`uname -s`
@@ -23,6 +23,10 @@ do_install()
   decompress_tool $tb_file $type
   mv $tb_dir $seed_name
   mv $seed_name $STAGE_DIR
+}
+do_test()
+{
+  $STAGE_DIR/$seed_name/tophat -N 0 -g 1 -x 1 --no-coverage-search /n/data1/genomes/bowtie-index/sacCer2/sacCer2 $BB_PATH/tests/sample_yeast.fastq
 }
 
 do_activate()

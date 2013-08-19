@@ -1,4 +1,4 @@
-local version="1.3.5"
+local version="1.3.6"
 local type="tar.gz"
 # sourceforge mirror was found by copying download link in 
 # Firefox's download manager.
@@ -19,7 +19,7 @@ do_install()
 
   cd $STAGE_DIR/$seed_name
   mkdir $STAGE_DIR/$seed_name/install
-  configure_tool $seed_name "CPPFLAGS=-I/n/local/include" "$STAGE_DIR/$seed_name/install"
+  configure_tool $seed_name "--enable-mpich --with-mpi=/n/local/bin/mpich2 CPPFLAGS=-I/n/local/include" "$STAGE_DIR/$seed_name/install"
  
   make_tool $seed_name $make_j
   install_tool $seed_name

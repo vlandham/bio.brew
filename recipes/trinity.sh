@@ -1,4 +1,4 @@
-local version="r2012-03-17"
+local version="r2013-02-25"
 local type="tgz"
 local tb_file="trinityrnaseq_${version}.${type}"
 local URL="http://sourceforge.net/projects/trinityrnaseq/files/${tb_file}"
@@ -24,7 +24,7 @@ do_activate()
 
 do_test()
 {
-  $STAGE_DIR/$seed_name/Trinity.pl --seqType fq --left $STAGE_DIR/../../stowers.bio.brew/tests/sample.fastq
+  $STAGE_DIR/$seed_name/Trinity.pl --seqType fq --left $BB_PATH/tests/sample.fastq
 }
 
 do_remove()
